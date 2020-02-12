@@ -13,9 +13,3 @@ Type: make
 to compile everything and: make clean
 to remove all compiled objects
 
-
-
---- > add something
-
-practicing the merge
-
