@@ -12,3 +12,4 @@ HI!
 Type: make
 to compile everything and: make clean
 to remove all compiled objects
+
