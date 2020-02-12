@@ -5,6 +5,8 @@
 #include <math.h>
 #include "kinetic.h"
 #include "md_struct.h"
+#include "constants.h"
+
 /* compute kinetic energy */
 static void ekin(mdsys_t *sys)
 {   

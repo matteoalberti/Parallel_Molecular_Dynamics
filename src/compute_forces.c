@@ -6,6 +6,7 @@
 #include "compute_forces.h"
 #include "helper.h"
 #include "md_struct.h"
+#include "constants.h"
 
 /* compute forces */
 static void force(mdsys_t *sys) 

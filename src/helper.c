@@ -5,6 +5,8 @@
 #include <math.h>
 #include "helper.h"
 #include "md_struct.h"
+#include "constants.h"
+
 
 /* helper function: read a line and then return
    the first string with whitespace stripped off */

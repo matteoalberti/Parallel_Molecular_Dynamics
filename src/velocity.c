@@ -6,6 +6,8 @@
 #include "velocity.h"
 #include "compute_forces.h"
 #include "md_struct.h"
+#include "constants.h"
+
 
 /* velocity verlet */
 static void velverlet(mdsys_t *sys)

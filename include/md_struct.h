@@ -1,5 +1,6 @@
 #ifndef MD_STRUCTURE_H
 #define MD_STRUCTURE_H
+#include "constants.h"
 
 /* structure to hold the complete information
  * about the MD system */

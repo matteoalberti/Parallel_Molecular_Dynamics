@@ -1,5 +1,7 @@
 #ifndef KINETIC_ENERGY_H
 #define KINETIC_ENERGY_H
+#include "md_struct.h"
+#include "constants.h"
 
 static void ekin(mdsys_t *sys);
 

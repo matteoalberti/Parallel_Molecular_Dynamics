@@ -5,6 +5,8 @@
 #include <math.h>
 #include "output.h"
 #include "md_struct.h"
+#include "constants.h"
+
 /* append data to output. */
 static void output(mdsys_t *sys, FILE *erg, FILE *traj)
 {
