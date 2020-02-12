@@ -7,6 +7,7 @@ placing the various object files in separate directories.
 
 The examples directory contains 3 sets of example input decks
 and the reference directory the corresponding outputs.
+HI! 
 
 Type: make
 to compile everything and: make clean
