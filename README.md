@@ -13,3 +13,7 @@ Type: make
 to compile everything and: make clean
 to remove all compiled objects
 
+### TODO
+
+- implement better Makefile for OBJ files
+
