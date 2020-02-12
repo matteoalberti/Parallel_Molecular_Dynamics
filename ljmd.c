@@ -26,8 +26,6 @@ const double mvsq2e=2390.05736153349; /* m*v^2 in kcal/mol */
 
 
 
-
-
 /* main */
 int main(int argc, char **argv) 
 {
