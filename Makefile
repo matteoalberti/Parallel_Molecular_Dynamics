@@ -16,3 +16,6 @@ clean:
 
 check: serial
 	$(MAKE) $(MFLAGS) -C examples check
+	
+test:
+	$(MAKE) $(MFLAGS) -C testing test
