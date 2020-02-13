@@ -2,7 +2,7 @@
 SPATH=../src
 IPATH=../include
 RPATH=..
-OBJS = $(RPATH)/ljmd.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/kinetic.o  $(SPATH)/output.o  $(SPATH)/velocity.o $(SPATH)/getline.o
+OBJS = $(RPATH)/ljmd.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/kinetic.o  $(SPATH)/output.o  $(SPATH)/velocity.o $(SPATH)/read_input.o $(SPATH)/getline.o
 EXE = $(RPATH)/ljmd.x
 CC = gcc
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
@@ -19,9 +19,10 @@ $(EXE): $(OBJS)
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o $@
 
-ljmd.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/output.h $(IPATH)/velocity.h $(IPATH)/getline.h
+ljmd.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/output.h $(IPATH)/velocity.h $(IPATH)/read_input.h $(IPATH)/getline.h
 
 $(SPATH)/getline.o: $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$(SPATH)/read_input.o: $(IPATH)/read_input.h $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
 $(SPATH)/compute_forces.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h
 $(SPATH)/helper.o: $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h
 $(SPATH)/kinetic.o: $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/constants.h

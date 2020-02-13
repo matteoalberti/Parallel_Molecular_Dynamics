@@ -18,3 +18,5 @@ void ekin(mdsys_t *sys)
     }
     sys->temp = 2.0*sys->ekin/(3.0*sys->natoms-3.0)/kboltz;
 }
+
+
