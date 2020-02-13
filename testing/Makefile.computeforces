@@ -9,7 +9,7 @@ CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
 LDLIBS=-lm
 
 
-default: $(EXE)
+default: $(EXE) 
 
 .PHONY: default
 
@@ -27,4 +27,13 @@ clean:
 	rm -f $(OBJS) $(EXE)
 
 .PHONY: clean
+
+
+
+#test: ./testing_compute_forces.x 
+#	./testing_compute_forces.x | tail -n 5 | awk '{print $2 $3 $4}' > a.dat 
+#	tail -n 5 compute_forces_export.txt | awk '{printf $2 $3 $4}' > b.dat 
+#	cmp a.dat b.dat | echo "Test passed! \n" ||exit 1 
+#	rm -f a.dat b.dat
+	
 

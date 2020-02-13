@@ -40,19 +40,21 @@ int main(){
 	sys.nsteps=1000;
 	sys.dt=5.0;
 	sys.nfi=0;
+	
+	// allocate for testing
+        //double test1[9]={-0.01153771,0.00442061,-1.68024661,-0.00222459,0.00085234,1.67493136,0.01376230,-0.00527295,0.00531525};
+        //double test2[9]={0.00077164,-0.00317732,-1.68067665,0.00000000,0.00000000,1.67682819,-0.00077164,0.00317732,0.00384845};
+	//double eps=1e-10;
 
 	/* allocate memory */
 	sys.rx=(double *)malloc(sys.natoms*sizeof(double));
 	sys.ry=(double *)malloc(sys.natoms*sizeof(double));
 	sys.rz=(double *)malloc(sys.natoms*sizeof(double));
 	
-	sys.vx=(double *)malloc(sys.natoms*sizeof(double));
-	sys.vy=(double *)malloc(sys.natoms*sizeof(double));
-	sys.vz=(double *)malloc(sys.natoms*sizeof(double));
-	
 	sys.fx=(double *)calloc(sys.natoms,sizeof(double));
 	sys.fy=(double *)calloc(sys.natoms,sizeof(double));
 	sys.fz=(double *)calloc(sys.natoms,sizeof(double));
+
 
 	//Set position of atoms - r[0] r[1] fixed on ax,ay and sigma distance between az | r[2] outside
 	sys.rx[0]=1;
@@ -99,6 +101,9 @@ int main(){
 		}	
 	printf("Epot should be near zero : %20.8f\n\n", sys.epot);	
 	
-
 }
+
+
+
+
 
