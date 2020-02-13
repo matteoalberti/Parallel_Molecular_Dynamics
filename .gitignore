@@ -1,0 +1,7 @@
+*.x
+*.png
+*.o
+*.gif
+*.log
+.directory
+*.so
