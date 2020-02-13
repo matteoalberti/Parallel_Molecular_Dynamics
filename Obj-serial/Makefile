@@ -6,7 +6,7 @@ OBJS = $(RPATH)/ljmd.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/ki
 EXE = $(RPATH)/ljmd.x
 CC = gcc
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
-LDLIBS=-lm
+LDFLAGS=-lm -L. -g
 
 
 default: $(EXE)
@@ -14,10 +14,10 @@ default: $(EXE)
 .PHONY: default
 
 $(EXE): $(OBJS)
-	$(CC) $^ -o $@
+	$(CC) $^ -o $@ $(LDFLAGS)
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o $@
+	$(CC) -c $(CFLAGS) $< -o $@
 
 ljmd.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/output.h $(IPATH)/velocity.h $(IPATH)/getline.h
 
@@ -33,5 +33,4 @@ clean:
 
 .PHONY: clean
 
-# dependencies)
 ljmd.o: ljmd.c
