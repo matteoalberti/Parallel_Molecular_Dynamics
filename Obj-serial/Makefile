@@ -35,4 +35,3 @@ clean:
 
 # dependencies)
 ljmd.o: ljmd.c
-
