@@ -70,11 +70,11 @@ int main(){
 	//Execute 
 	force(&sys);
 	
-	printf("r[0] r[1] fixed on axis x,y and sigma distance on axis z | r[2] out of the box\n");
+	printf("\n\nr[0] r[1] fixed on axis x,y and sigma distance on axis z | r[2] out of the box\n");
 	for (int i=0; i<sys.natoms; ++i) {
 		printf("Fx  %20.8f %20.8f %20.8f\n", sys.fx[i], sys.fy[i], sys.fz[i]);
 		}	
-	printf("Epot %20.8f\n\n", sys.epot);	
+	printf("Epot should be near zero : %20.8f\n\n", sys.epot);	
 	
 
 	//Set position of atoms - r[0] r[1] fixed on ax,ay and sigma distance between az | r[2] inside
@@ -97,7 +97,7 @@ int main(){
 	for (int i=0; i<sys.natoms; ++i) {
 		printf("Fx  %20.8f %20.8f %20.8f\n", sys.fx[i], sys.fy[i], sys.fz[i]);
 		}	
-	printf("Epot %20.8f\n\n", sys.epot);	
+	printf("Epot should be near zero : %20.8f\n\n", sys.epot);	
 	
 
 }
