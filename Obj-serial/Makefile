@@ -33,4 +33,4 @@ clean:
 
 .PHONY: clean
 
-
+ljmd.o: ljmd.c
