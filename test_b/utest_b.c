@@ -82,6 +82,11 @@ if (argv[1]==NULL){
 printf("\n Insert 0 to put particle OUTSIDE of the box, and ");
 }
 
+/***************************MAIN_CYCLE******************************************************/
+for (int i=0; i<natoms_test; ++i) {
+
+int FLAG =0;
+
 fx_test = 0;
 fy_test = 0;
 fz_test = 0;
@@ -89,11 +94,6 @@ fz_test = 0;
 vx_test = 0;
 vy_test = 0;
 vz_test = 0;
-
-/***************************MAIN_CYCLE******************************************************/
-for (int i=0; i<natoms_test; ++i) {
-
-int FLAG =0;
 
 sys.fx[i] = 0;
 sys.fy[i] = 0;
@@ -112,23 +112,21 @@ sys.rx[i] = rx_inp_in[i];
 sys.ry[i] = ry_inp_in[i];
 sys.rz[i] = rz_inp_in[i];
 
-rx_test += mdt_test  * vx_test;
-ry_test += mdt_test  * vy_test;
-rz_test += mdt_test  * vz_test;
-
 r_test = sqrt(rx_test * rx_test + ry_test * ry_test + rz_test * rz_test);
 
 ffac_test = - 0.4 * eps_test / r_test * (-12.0 * pow(sigma_test/r_test,12.0) + 6 * pow(sigma_test/r_test,6.0));
-
-
-fx_test = ffac_test * rx_test/r_test;
-fy_test = ffac_test * ry_test/r_test;
-fz_test = ffac_test * rz_test/r_test;
 
 vx_test = mdt_test  * fx_test/ mass_test * mvsq2e;
 vy_test = mdt_test  * fy_test/ mass_test * mvsq2e;
 vz_test = mdt_test  * fz_test/ mass_test * mvsq2e;
 
+rx_test += mdt_test  * vx_test;
+ry_test += mdt_test  * vy_test;
+rz_test += mdt_test  * vz_test;
+
+fx_test = ffac_test * rx_test/r_test;
+fy_test = ffac_test * ry_test/r_test;
+fz_test = ffac_test * rz_test/r_test;
 
 /*******************************************/
  velverlet_step2(&sys);
@@ -171,7 +169,7 @@ fx_e = ffac_e * sys.rx[i] / r_e;
 fy_e = ffac_e * sys.ry[i] / r_e;
 fz_e = ffac_e * sys.rz[i] / r_e;
 /*******************************************/
-velverlet_step1(&sys);
+velverlet_step2(&sys);
 
     if  ( fabs( fx_e - fx_test ) > tol_test)
     printf("\nCalculation ERROR of forse:  for %d particle.\nExpected %f \n Get %f", i, fx_e, fx_test);
