@@ -18,37 +18,18 @@
 #include "velocity.h"
 #include "md_struct.h"
 #include "getline.h"
+#include "read_input.h"
 
 /* main */
 int main() 
 {
     int nprint, i;
-    char restfile[BLEN], trajfile[BLEN], ergfile[BLEN], line[BLEN];
+    char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
     FILE *fp,*traj,*erg;
     mdsys_t sys;
 
-    /* read input file */
-    if(get_a_line(stdin,line)) return 1;
-    sys.natoms=atoi(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.mass=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.epsilon=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.sigma=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.rcut=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.box=atof(line);
-    if(get_a_line(stdin,restfile)) return 1;
-    if(get_a_line(stdin,trajfile)) return 1;
-    if(get_a_line(stdin,ergfile)) return 1;
-    if(get_a_line(stdin,line)) return 1;
-    sys.nsteps=atoi(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.dt=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    nprint=atoi(line);
+    read_input(&sys, restfile, trajfile, ergfile, &nprint);
+    
 
     /* allocate memory */
     sys.rx=(double *)malloc(sys.natoms*sizeof(double));
