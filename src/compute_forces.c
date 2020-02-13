@@ -5,11 +5,11 @@
 #include <math.h>
 #include "compute_forces.h"
 #include "helper.h"
-#include "md_struct.h"
+
 #include "constants.h"
 
 /* compute forces */
-static void force(mdsys_t *sys) 
+void force(mdsys_t *sys) 
 {
     double r,ffac;
     double rx,ry,rz;
