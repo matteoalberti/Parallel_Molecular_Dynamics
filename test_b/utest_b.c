@@ -85,7 +85,7 @@ printf("\n Insert 0 to put particle OUTSIDE of the box, and ");
 /***************************MAIN_CYCLE******************************************************/
 for (int i=0; i<natoms_test; ++i) {
 
-int FLAG =0;
+int FLAG = 0;
 
 fx_test = 0;
 fy_test = 0;
@@ -132,24 +132,24 @@ fz_test = ffac_test * rz_test/r_test;
  velverlet_step2(&sys);
 
     if  ( fabs( sys.vx[i] - vx_test ) > tol_test)
-    printf("\nCalculation ERROR of velocity:  for %d particle.\nExpected %f \n Get %f", i, sys.vx[i], vx_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of velocity:  for %d particle.\nExpected %f \n Get %f", i, sys.vx[i], vx_test);
+    FLAG++;}
     if  ( fabs( sys.vy[i] - vy_test ) > tol_test)
-    printf("\nCalculation ERROR of velocity:  for %d particle.\nExpected %f \n Get %f", i, sys.vy[i], vy_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of velocity:  for %d particle.\nExpected %f \n Get %f", i, sys.vy[i], vy_test);
+    FLAG++;}
     if  ( fabs( sys.vz[i] - vz_test )  > tol_test)
-    printf("\nCalculation ERROR of velocity:  for %d particle.\nExpected %f \n Get %f", i, sys.vz[i], vz_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of velocity:  for %d particle.\nExpected %f \n Get %f", i, sys.vz[i], vz_test);
+    FLAG++;}
 
     if  ( fabs( sys.rx[i] - rx_test ) > tol_test)
-    printf("\nCalculation ERROR of position:  for %d particle.\nExpected %f \n Get %f", i, sys.rx[i], rx_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of position:  for %d particle.\nExpected %f \n Get %f", i, sys.rx[i], rx_test);
+    FLAG++;}
     if  ( fabs( sys.ry[i] - ry_test )  > tol_test)
-    printf("\nCalculation ERROR of position:  for %d particle.\nExpected %f \n Get %f", i, sys.ry[i], ry_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of position:  for %d particle.\nExpected %f \n Get %f", i, sys.ry[i], ry_test);
+    FLAG++;}
     if  ( fabs( sys.rz[i] - rz_test ) > tol_test)
-    printf("\nCalculation ERROR of position:  for %d particle.\nExpected %f \n Get %f", i, sys.rz[i], rz_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of position:  for %d particle.\nExpected %f \n Get %f", i, sys.rz[i], rz_test);
+    FLAG++;}
 
 
 /*PART TO COMPARE FORCES WITHOUT CALLING FOR FORCE() FUNCTION*/
@@ -172,14 +172,14 @@ fz_e = ffac_e * sys.rz[i] / r_e;
 velverlet_step2(&sys);
 
     if  ( fabs( fx_e - fx_test ) > tol_test)
-    printf("\nCalculation ERROR of forse:  for %d particle.\nExpected %f \n Get %f", i, fx_e, fx_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of forse:  for %d particle.\nExpected %f \n Get %f", i, fx_e, fx_test);
+    FLAG++;}
     if  ( fabs( fy_e - fy_test ) > tol_test)
-    printf("\nCalculation ERROR of forse:  for %d particle.\nExpected %f \n Get %f", i, fy_e, fy_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of forse:  for %d particle.\nExpected %f \n Get %f", i, fy_e, fy_test);
+    FLAG++;}
     if  ( fabs( fz_e - fz_test ) > tol_test)
-    printf("\nCalculation ERROR of forse:  for %d particle.\nExpected %f \n Get %f", i, fz_e, fz_test);
-    else FLAG++;
+    {printf("\nCalculation ERROR of forse:  for %d particle.\nExpected %f \n Get %f", i, fz_e, fz_test);
+    FLAG++;}
 
 
     if (FLAG==0)
