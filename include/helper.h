@@ -1,5 +1,8 @@
 #ifndef HELPER_FUNCTION_H
 #define HELPER_FUNCTION_H
+
+#include <stdio.h>
+
 #include "md_struct.h"
 #include "constants.h"
 
