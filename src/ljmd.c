@@ -16,8 +16,7 @@
 #include "output.h"
 #include "velocity.h"
 #include "md_struct.h"
-
-
+#include "getline.h"
 
 /* main */
 int main(int argc, char **argv) 

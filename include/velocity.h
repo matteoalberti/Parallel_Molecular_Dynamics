@@ -4,6 +4,6 @@
 #include "md_struct.h"
 #include "constants.h"
 
-static void velverlet(mdsys_t *sys);
+void velverlet(mdsys_t *sys);
 
 #endif

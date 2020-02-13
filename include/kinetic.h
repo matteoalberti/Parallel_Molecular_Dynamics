@@ -3,6 +3,6 @@
 #include "md_struct.h"
 #include "constants.h"
 
-static void ekin(mdsys_t *sys);
+void ekin(mdsys_t *sys);
 
 #endif

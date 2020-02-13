@@ -9,7 +9,7 @@
 #include "constants.h"
 
 /* compute kinetic energy */
-static void ekin(mdsys_t *sys)
+void ekin(mdsys_t *sys)
 {   
     int i;
 
