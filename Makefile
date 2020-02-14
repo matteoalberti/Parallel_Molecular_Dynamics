@@ -8,7 +8,7 @@ OBJ_SERIAL=$(SRC:src/%.f90=Obj-serial/%.o)
 default: serial
 
 serial:
-	$(MAKE) $(MFLAGS) -C Obj-$@
+	$(MAKE) $(MFLAGS) -C src
 
 clean:
 	$(MAKE) $(MFLAGS) -C Obj-serial clean
@@ -19,3 +19,6 @@ check: serial
 	
 test:
 	$(MAKE) $(MFLAGS) -C testing test
+	
+shared: 
+	$(MAKE) $(MFLAGS) -C src shared  
