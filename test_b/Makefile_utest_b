@@ -1,0 +1,37 @@
+# -*- Makefile -*-
+IPATH  =../include
+SPATH  =../src
+OBJS   = utest_b.o  ../src/velocity.o  ../src/compute_forces.o ../src/helper.o
+EXE    = utest_b.x 
+CC     = gcc
+CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
+LDLIBS = 
+
+default: $(EXE)
+.PHONY: default
+
+$(EXE): $(OBJS)
+	$(CC) $^ -o $@
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o $@
+
+velocity.o: $(SPATH)/velocity.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o velocity.o
+
+
+helper.o: $(SPATH)/helper.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o helper.o
+
+compute_forces.o: $(SPATH)/compute_forces.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o compute_forces.o
+
+
+../src/velocity.o: $(IPATH)/velocity.h $(IPATH)/md_struct.h $(IPATH)/constants.h $(IPATH)/compute_forces.h  
+
+../src/compute_forces.o: $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h $(IPATH)/compute_forces.h
+
+../src/helper.o: $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h 
+
+clean:
+	rm -f $(OBJS) $(EXE)
+.PHONY: clean

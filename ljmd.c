@@ -64,13 +64,14 @@ int main()
     sys.nfi=0;
     force(&sys);
     ekin(&sys);
-    
+
+
     erg=fopen(ergfile,"w");
     traj=fopen(trajfile,"w");
 
     printf("Starting simulation with %d atoms for %d steps.\n",sys.natoms, sys.nsteps);
-    printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
-    output(&sys, erg, traj);
+   printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
+    output(&sys, erg, traj); 
 
     /**************************************************/
     /* main MD loop */
