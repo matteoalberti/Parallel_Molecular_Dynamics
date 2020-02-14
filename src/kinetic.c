@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <math.h>
+
 #include "kinetic.h"
 #include "md_struct.h"
 #include "constants.h"
@@ -18,3 +19,5 @@ void ekin(mdsys_t *sys)
     }
     sys->temp = 2.0*sys->ekin/(3.0*sys->natoms-3.0)/kboltz;
 }
+
+

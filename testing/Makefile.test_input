@@ -1,0 +1,33 @@
+# -*- Makefile -*-
+IPATH=../include
+SPATH=../src
+OBJS = test_input.o read_input.o getline.o
+EXE = test_input.x
+CC = gcc
+CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
+LDLIBS=-lm
+
+default: $(EXE)
+
+.PHONY: default
+
+$(EXE): $(OBJS)
+	$(CC) $^ -o $@
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o $@
+
+getline.o: $(SPATH)/getline.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o getline.o
+	
+read_input.o: $(SPATH)/read_input.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o read_input.o
+	
+test_input.o: $(IPATH)/md_struct.h $(IPATH)/read_input.h $(IPATH)/getline.h
+getline.o: $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+read_input.o: $(IPATH)/read_input.h $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+
+clean:
+	rm -f $(OBJS) $(EXE)
+
+.PHONY: clean
