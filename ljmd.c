@@ -33,8 +33,6 @@ int main()
     mdsys_t sys;
 
     //INITIALIZE MPI
-
-    //Move to src/mpi_io.c
 	#ifdef USE_MPI
 	  MPI_Init();
 	  MPI_Comm_size( MPI_COMM_WORLD, &sys->npes );
@@ -85,6 +83,7 @@ int main()
     force(&sys);
     ekin(&sys);
 
+    if ( sys.rank == 0 ) {
 
     erg=fopen(ergfile,"w");
     traj=fopen(trajfile,"w");
@@ -92,13 +91,14 @@ int main()
     printf("Starting simulation with %d atoms for %d steps.\n",sys.natoms, sys.nsteps);
    printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
     output(&sys, erg, traj); 
+    }
 
     /**************************************************/
     /* main MD loop */
     for(sys.nfi=1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 
         /* write output, if requested */
-        if ((sys.nfi % nprint) == 0)
+        if (( sys.rank == 0 ) && (sys.nfi % nprint) == 0)
             output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
@@ -108,9 +108,11 @@ int main()
     /**************************************************/
 
     /* clean up: close files, free memory */
+    if ( sys.rank == 0 ) {
     printf("Simulation Done.\n");
     fclose(erg);
     fclose(traj);
+    }
 
     free(sys.rx);
     free(sys.ry);
@@ -121,6 +123,12 @@ int main()
     free(sys.fx);
     free(sys.fy);
     free(sys.fz);
+	#ifdef USE_MPI
+	  // free support
+	  free( sys->cx );
+	  free( sys->cy );
+	  free( sys->cz );
+	#endif //USE_MPI
 
 
 	#ifdef USE_MPI
