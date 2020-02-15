@@ -38,8 +38,8 @@ int main()
 	  MPI_Comm_size( MPI_COMM_WORLD, &sys->npes );
 	  MPI_Comm_rank( MPI_COMM_WORLD, &sys->rank );
 	#else
-	  sys->rank = 0;
-	  sys->npes = 1;
+	  sys.rank = 0;
+	  sys.npes = 1;
 	#endif //USE_MPI
 
 	//READING DATA and if MPI is definite Broadcast
