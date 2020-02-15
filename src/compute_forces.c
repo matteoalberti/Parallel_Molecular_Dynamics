@@ -13,10 +13,30 @@ void force(mdsys_t *sys)
 {
     double r,ffac;
     double rx,ry,rz;
+    double * fx, *fy, *fz;
     int i,j;
+    double epot = 0.0;
+
 
     /* zero energy and forces */
-    sys->epot=0.0;
+	#ifdef USE_MPI
+
+	  fx = sys->cx;
+	  fy = sys->cy;
+	  fz = sys->cz;
+
+	  /* communicate to all the processes previous step update of positions */
+	  MPI_Bcast( sys->rx, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+	  MPI_Bcast( sys->ry, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+	  MPI_Bcast( sys->rz, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+
+	#else
+	  /* sys->epot=0.0; */
+	  fx = sys->fx;
+	  fy = sys->fy;
+	  fz = sys->fz;
+	#endif //USE_MPI
+
     azzero(sys->fx,sys->natoms);
     azzero(sys->fy,sys->natoms);
     azzero(sys->fz,sys->natoms);
@@ -47,4 +67,13 @@ void force(mdsys_t *sys)
             }
         }
     }
+	#ifdef USE_MPI
+	  MPI_Reduce( fx, sys->fx, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD );
+	  MPI_Reduce( fy, sys->fy, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD );
+	  MPI_Reduce( fz, sys->fz, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD );
+	  MPI_Reduce( &epot, &sys->epot, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD );
+	#else
+	  sys->epot = epot;
+	#endif //USE_MPI
+	return;
 }
