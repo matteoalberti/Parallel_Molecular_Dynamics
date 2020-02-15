@@ -32,4 +32,43 @@ void read_input(mdsys_t *sys, char* restfile, char* trajfile, char* ergfile, int
     if(get_a_line(stdin,line)) exit(1);
     *nprint=atoi(line);
     
+	#ifdef USE_MPI
+    broadcast_values( sys );
+	#endif //USE_MPI
+
 }
+
+void broadcast_values ( mdsys_t * sys ) {
+
+#ifdef USE_MPI
+  /* Broadcasting from rank 0 to all what has been read */
+  MPI_Bcast( &( sys->natoms ), 1, MPI_INT, 0, MPI_COMM_WORLD );
+  MPI_Bcast( &( sys->mass ), 1, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( &( sys->epsilon ), 1, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( &( sys->sigma ), 1, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( &( sys->rcut ), 1, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( &( sys->box ), 1, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( &( sys->nsteps ), 1, MPI_INT, 0, MPI_COMM_WORLD );
+  MPI_Bcast( &( sys->dt ), 1, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+#endif //USE_MPI
+
+  return;
+
+}
+
+void broadcast_arrays ( mdsys_t * sys ) {
+
+#ifdef USE_MPI
+  /* Broadcasting from rank 0 to all what has been read */
+  MPI_Bcast( sys->rx, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( sys->ry, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( sys->rz, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( sys->vx, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( sys->vy, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+  MPI_Bcast( sys->vz, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+#endif //USE_MPI
+
+  return;
+
+}
+

@@ -44,8 +44,7 @@ int main()
 	  sys->npes = 1;
 	#endif //USE_MPI
 
-
-
+	//READING DATA and if MPI is definite Broadcast
     read_input(&sys, restfile, trajfile, ergfile, &nprint);
     
 
@@ -77,6 +76,9 @@ int main()
         perror("cannot read restart file");
         return 3;
     }
+	#ifdef USE_MPI
+    broadcast_arrays( sys );
+	#endif
 
     /* initialize forces and energies.*/
     sys.nfi=0;
