@@ -20,13 +20,29 @@
 #include "getline.h"
 #include "read_input.h"
 
+#ifdef USE_MPI
+#include <mpi.h>
+#endif //USE_MPI
+
 /* main */
 int main() 
 {
-    int nprint, i;
+    int nprint, i, rank, npes;
     char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
     FILE *fp,*traj,*erg;
     mdsys_t sys;
+
+    //Move to src/mpi_io.c
+	#ifdef USE_MPI
+	  int * argc_dummy;
+	  char *** argv_dummy;
+	  MPI_Init( argc_dummy, argv_dummy );
+	  MPI_Comm_size( MPI_COMM_WORLD, &sys->npes );
+	  MPI_Comm_rank( MPI_COMM_WORLD, &sys->rank );
+	#else
+	  sys->rank = 0;
+	  sys->npes = 1;
+	#endif //USE_MPI
 
     read_input(&sys, restfile, trajfile, ergfile, &nprint);
     
