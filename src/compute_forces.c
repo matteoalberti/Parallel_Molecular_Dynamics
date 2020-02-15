@@ -18,6 +18,7 @@ void force(mdsys_t *sys)
     double epot = 0.0;
 
 
+
     /* zero energy and forces */
 	#ifdef USE_MPI
 

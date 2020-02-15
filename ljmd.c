@@ -32,17 +32,19 @@ int main()
     FILE *fp,*traj,*erg;
     mdsys_t sys;
 
+    //INITIALIZE MPI
+
     //Move to src/mpi_io.c
 	#ifdef USE_MPI
-	  int * argc_dummy;
-	  char *** argv_dummy;
-	  MPI_Init( argc_dummy, argv_dummy );
+	  MPI_Init();
 	  MPI_Comm_size( MPI_COMM_WORLD, &sys->npes );
 	  MPI_Comm_rank( MPI_COMM_WORLD, &sys->rank );
 	#else
 	  sys->rank = 0;
 	  sys->npes = 1;
 	#endif //USE_MPI
+
+
 
     read_input(&sys, restfile, trajfile, ergfile, &nprint);
     
@@ -117,6 +119,11 @@ int main()
     free(sys.fx);
     free(sys.fy);
     free(sys.fz);
+
+
+	#ifdef USE_MPI
+	  MPI_Finalize();
+	#endif //USE_MPI
 
     return 0;
 }
