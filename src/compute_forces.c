@@ -3,11 +3,14 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <math.h>
-#include <omp.h>
 
 #include "compute_forces.h"
 #include "helper.h"
 #include "constants.h"
+
+#if defined(_OPENMP)
+#include <omp.h>
+#endif
 
 
 /* compute forces */
@@ -19,20 +22,27 @@ void force(mdsys_t *sys)
 
 #if defined(_OPENMP)
 #pragma omp parallel reduction(+:epot)
+#endif
+    { // begin of parallel region
+       double *fx, *fy, *fz;
+#if defined(_OPENMP)
+       int tid = omp_get_thread_num();
+#else
+       int tid = 0;
+#endif
 
+       fx = sys->fx + (tid*sys->natoms);
+       fy = sys->fy + (tid*sys->natoms);
+       fz = sys->fz + (tid*sys->natoms);
 
+       /* zero energy and forces */
+       sys->epot=0.0;
+       azzero(fx,sys->natoms);
+       azzero(fy,sys->natoms);
+       azzero(fz,sys->natoms);
 
-
-
-
-    /* zero energy and forces */
-    sys->epot=0.0;
-    azzero(sys->fx,sys->natoms);
-    azzero(sys->fy,sys->natoms);
-    azzero(sys->fz,sys->natoms);
-
-    for(i=0; i < (sys->natoms); ++i) {
-        for(j=0; j < (sys->natoms); ++j) {
+       for(i=0; i < (sys->natoms); ++i) {
+         for(j=0; j < (sys->natoms); ++j) {
 
             /* particles have no interactions with themselves */
             if (i==j) continue;
@@ -55,6 +65,7 @@ void force(mdsys_t *sys)
                 sys->fy[i] += ry/r*ffac;
                 sys->fz[i] += rz/r*ffac;
             }
-        }
-    }
+         }
+       }
+   }// end of parallel region
 }
