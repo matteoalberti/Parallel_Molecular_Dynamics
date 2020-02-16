@@ -5,8 +5,10 @@
 #include <math.h>
 #include "compute_forces.h"
 #include "helper.h"
-
 #include "constants.h"
+#ifdef USE_MPI
+#include <mpi.h>
+#endif //USE_MPI
 
 /* compute forces */
 void force(mdsys_t *sys) 

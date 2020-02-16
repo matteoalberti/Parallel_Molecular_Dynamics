@@ -4,7 +4,9 @@
 #include <getline.h>
 #include <stdlib.h>
 #include <stdlib.h>
-
+#ifdef USE_MPI
+#include <mpi.h>
+#endif //USE_MPI
 
 void read_input(mdsys_t *sys, char* restfile, char* trajfile, char* ergfile, int* nprint){
 /* read input file */
