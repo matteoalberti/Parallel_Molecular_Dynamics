@@ -12,7 +12,7 @@
 #include <math.h>
 #include "compute_forces.h"
 #include "helper.h"
-#include "kinetic_energy.h"
+#include "kinetic.h"
 #include "output.h"
 #include "velocity.h"
 #include "md_struct.h"

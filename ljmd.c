@@ -10,7 +10,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <math.h>
-
 #include "compute_forces.h"
 #include "helper.h"
 #include "kinetic.h"
@@ -18,33 +17,37 @@
 #include "velocity.h"
 #include "md_struct.h"
 #include "getline.h"
-#include "read_input.h"
-
-#ifdef USE_MPI
-#include <mpi.h>
-#endif //USE_MPI
 
 /* main */
-int main() 
+int main(int argc, char **argv) 
 {
-    int nprint, i, rank, npes;
-    char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
+    int nprint, i;
+    char restfile[BLEN], trajfile[BLEN], ergfile[BLEN], line[BLEN];
     FILE *fp,*traj,*erg;
     mdsys_t sys;
 
-    //INITIALIZE MPI
-	#ifdef USE_MPI
-	  MPI_Init();
-	  MPI_Comm_size( MPI_COMM_WORLD, &sys->npes );
-	  MPI_Comm_rank( MPI_COMM_WORLD, &sys->rank );
-	#else
-	  sys.rank = 0;
-	  sys.npes = 1;
-	#endif //USE_MPI
-
-	//READING DATA and if MPI is definite Broadcast
-    read_input(&sys, restfile, trajfile, ergfile, &nprint);
-    
+    /* read input file */
+    if(get_a_line(stdin,line)) return 1;
+    sys.natoms=atoi(line);
+    if(get_a_line(stdin,line)) return 1;
+    sys.mass=atof(line);
+    if(get_a_line(stdin,line)) return 1;
+    sys.epsilon=atof(line);
+    if(get_a_line(stdin,line)) return 1;
+    sys.sigma=atof(line);
+    if(get_a_line(stdin,line)) return 1;
+    sys.rcut=atof(line);
+    if(get_a_line(stdin,line)) return 1;
+    sys.box=atof(line);
+    if(get_a_line(stdin,restfile)) return 1;
+    if(get_a_line(stdin,trajfile)) return 1;
+    if(get_a_line(stdin,ergfile)) return 1;
+    if(get_a_line(stdin,line)) return 1;
+    sys.nsteps=atoi(line);
+    if(get_a_line(stdin,line)) return 1;
+    sys.dt=atof(line);
+    if(get_a_line(stdin,line)) return 1;
+    nprint=atoi(line);
 
     /* allocate memory */
     sys.rx=(double *)malloc(sys.natoms*sizeof(double));
@@ -74,31 +77,25 @@ int main()
         perror("cannot read restart file");
         return 3;
     }
-	#ifdef USE_MPI
-    broadcast_arrays( sys );
-	#endif
 
     /* initialize forces and energies.*/
     sys.nfi=0;
     force(&sys);
     ekin(&sys);
-
-    if ( sys.rank == 0 ) {
-
+    
     erg=fopen(ergfile,"w");
     traj=fopen(trajfile,"w");
 
     printf("Starting simulation with %d atoms for %d steps.\n",sys.natoms, sys.nsteps);
-   printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
-    output(&sys, erg, traj); 
-    }
+    printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
+    output(&sys, erg, traj);
 
     /**************************************************/
     /* main MD loop */
     for(sys.nfi=1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 
         /* write output, if requested */
-        if (( sys.rank == 0 ) && (sys.nfi % nprint) == 0)
+        if ((sys.nfi % nprint) == 0)
             output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
@@ -108,11 +105,9 @@ int main()
     /**************************************************/
 
     /* clean up: close files, free memory */
-    if ( sys.rank == 0 ) {
     printf("Simulation Done.\n");
     fclose(erg);
     fclose(traj);
-    }
 
     free(sys.rx);
     free(sys.ry);
@@ -123,17 +118,6 @@ int main()
     free(sys.fx);
     free(sys.fy);
     free(sys.fz);
-	#ifdef USE_MPI
-	  // free support
-	  free( sys->cx );
-	  free( sys->cy );
-	  free( sys->cz );
-	#endif //USE_MPI
-
-
-	#ifdef USE_MPI
-	  MPI_Finalize();
-	#endif //USE_MPI
 
     return 0;
 }

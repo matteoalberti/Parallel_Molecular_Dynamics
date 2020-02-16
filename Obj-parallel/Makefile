@@ -9,7 +9,7 @@ MPIC = mpicc
 
 
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
-LDFLAGS=-lm -L. -g -L/opt/openmpi/4.0.1/lib
+LDFLAGS=-lm -L. -g -L/opt/openmpi/4.0.1/lib 
 
 
 default: $(EXE)
@@ -17,10 +17,10 @@ default: $(EXE)
 .PHONY: default
 
 $(EXE): $(OBJS)
-	$(MPIC) $^ -o $@ $(LDFLAGS)
+	$(MPIC) $^ -o $@ $(LDFLAGS) -DUSE_MPI
 
 %.o: %.c
-	$(MPIC) -c $(CFLAGS) $< -o $@
+	$(MPIC) -c $(CFLAGS) $< -o $@ -DUSE_MPI
 
 ljmd.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/output.h $(IPATH)/velocity.h $(IPATH)/read_input.h $(IPATH)/getline.h
 
