@@ -3,10 +3,12 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <math.h>
+#include <omp.h>
+
 #include "compute_forces.h"
 #include "helper.h"
-
 #include "constants.h"
+
 
 /* compute forces */
 void force(mdsys_t *sys) 
@@ -14,6 +16,14 @@ void force(mdsys_t *sys)
     double r,ffac;
     double rx,ry,rz;
     int i,j;
+
+#if defined(_OPENMP)
+#pragma omp parallel reduction(+:epot)
+
+
+
+
+
 
     /* zero energy and forces */
     sys->epot=0.0;
