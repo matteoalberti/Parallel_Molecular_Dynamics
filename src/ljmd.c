@@ -78,8 +78,8 @@ int main()
     for(sys.nfi=1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 
         /* write output, if requested */
-       // if ((sys.nfi % nprint) == 0)
-        //    output(&sys, erg, traj);
+        if ((sys.nfi % nprint) == 0)
+            output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
         velverlet(&sys);

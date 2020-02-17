@@ -19,9 +19,9 @@ if psys.rank==0:
 psys.nfi=1
 
 for i in range(psys.nsteps):
-   # if psys.rank==0:
-   #   if psys.nfi % psys.nprint == 0:
-   #     psys.output()
+    if psys.rank==0:
+      if psys.nfi % psys.nprint == 0:
+        psys.output()
     psys.nfi+=1
     psys.velverlet()
     psys.ekin_f()
