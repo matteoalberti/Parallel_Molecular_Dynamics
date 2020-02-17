@@ -21,14 +21,14 @@ void force(mdsys_t *sys)
     int i,j;
 
 #if defined(_OPENMP)
-#pragma omp parallel reduction(+:epot)
+#pragma omp parallel reduction(+:sys->epot)
 #endif
     { // begin of parallel region
        double *fx, *fy, *fz;
 #if defined(_OPENMP)
        int tid = omp_get_thread_num();
 #else
-       int tid = 0;
+       int ntds= 1;
 #endif
 
        fx = sys->fx + (tid*sys->natoms);
