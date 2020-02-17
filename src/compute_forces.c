@@ -28,8 +28,9 @@ void force(mdsys_t *sys)
 #if defined(_OPENMP)
        int tid = omp_get_thread_num();
 #else
-       int ntds= 1;
+       int tid= 0;
 #endif
+       int n_block = sys->natoms / sys->threads ;
 
        fx = sys->fx + (tid*sys->natoms);
        fy = sys->fy + (tid*sys->natoms);
