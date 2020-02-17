@@ -18,7 +18,7 @@ LIBS_MPI= $(SRCS:%.c=$(SOPATH)/%.mpi.so)
 LIBS_OPN= $(SRCS:%.c=$(SOPATH)/%.opn.so)
 LIBS_MPI_OPN= $(SRCS:%.c=$(SOPATH)/%.mpi.opn.so)
 CC = gcc
-CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3 
+CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3  -std=c99
 LDFLAGS=-lm -L. -g 
 OMPFLAGS=-fopenmp -D_OPENMP
 MPIC = mpicc
