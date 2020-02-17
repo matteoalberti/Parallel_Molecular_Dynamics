@@ -3,6 +3,10 @@
 #include "md_struct.h"
 #include "constants.h"
 
+#if defined(_OPENMP)
+#include <omp.h>
+#endif
+
 void ekin(mdsys_t *sys);
 
 #endif
