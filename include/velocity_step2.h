@@ -5,6 +5,6 @@
 #include "constants.h"
 
 
-void vel_step1(mdsys_t *sys); 
+void vel_step2(mdsys_t *sys); 
 
 #endif
