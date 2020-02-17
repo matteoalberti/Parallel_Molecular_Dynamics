@@ -28,6 +28,7 @@ $helper.o: $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h
 $kinetic.o: $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/constants.h
 $output.o: $(IPATH)/output.h $(IPATH)/md_struct.h $(IPATH)/constants.h
 $velocity.o: $(IPATH)/velocity.h $(IPATH)/compute_forces.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$mpi_functions.o: $(IPATH)/mpi_functions.h $(IPATH)/md_struct.h
 
 clean:
 	rm -f $(OBJS) $(EXE)
