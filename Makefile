@@ -18,7 +18,10 @@ clean:
 	$(MAKE) $(MFLAGS) -C Obj-serial clean
 	$(MAKE) $(MFLAGS) -C Obj-parallel clean
 	$(MAKE) $(MFLAGS) -C examples clean
-
+	$(MAKE) $(MFLAGS) -C src clean
+	
+mpi: 
+	$(MAKE) $(MFLAGS) -C src mpi
 check: serial
 	$(MAKE) $(MFLAGS) -C examples check
 
