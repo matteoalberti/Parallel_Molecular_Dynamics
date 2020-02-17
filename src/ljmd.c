@@ -35,9 +35,10 @@ int main(int argc, char *argv[])
 
     initialize_mpi( &sys );
 
-	//READING DATA and if MPI is definite Broadcast
-    read_input(&sys, restfile, trajfile, ergfile, &nprint);
+    //READING DATA and if MPI is definite Broadcast
 
+    read_input(&sys, restfile, trajfile, ergfile, &nprint);
+    
 
     /* allocate memory */
     sys.rx=(double *)malloc(sys.natoms*sizeof(double));

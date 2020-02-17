@@ -7,11 +7,12 @@
 #ifdef USE_MPI
 #include <mpi.h>
 #endif //USE_MPI
+#include "md_struct.h"
 
 void read_input(mdsys_t *sys, char* restfile, char* trajfile, char* ergfile, int* nprint){
 /* read input file */
     char line[BLEN];
-    
+    if ( sys->rank == 0 ) {    
     if(get_a_line(stdin,line)) exit(1);
     sys->natoms=atoi(line);
     if(get_a_line(stdin,line)) exit(1);
@@ -33,7 +34,7 @@ void read_input(mdsys_t *sys, char* restfile, char* trajfile, char* ergfile, int
     sys->dt=atof(line);
     if(get_a_line(stdin,line)) exit(1);
     *nprint=atoi(line);
-    
+    }    
     #ifdef USE_MPI
     broadcast_values( sys );
     #endif //USE_MPI
