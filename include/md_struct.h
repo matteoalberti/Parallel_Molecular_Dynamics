@@ -6,6 +6,7 @@
  * about the MD system */
 struct _mdsys {
     int natoms,nfi,nsteps;
+    int rank,nps;
     double dt, mass, epsilon, sigma, box, rcut;
     double ekin, epot, temp;
     double *rx, *ry, *rz;
