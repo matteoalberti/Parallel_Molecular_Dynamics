@@ -27,10 +27,13 @@ void force(mdsys_t *sys)
        double *fx, *fy, *fz;
 #if defined(_OPENMP)
        int tid = omp_get_thread_num();
+       int nthreads = omp_get_num_threads();
 #else
        int tid= 0;
+       int nthreads = 1;
 #endif
-       int n_block = sys->natoms / sys->threads ;
+
+       int n_block = sys->natoms / nthreads ;
 
        fx = sys->fx + (tid*sys->natoms);
        fy = sys->fy + (tid*sys->natoms);
