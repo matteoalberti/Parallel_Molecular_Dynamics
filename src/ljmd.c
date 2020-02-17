@@ -27,7 +27,7 @@
 /* main */
 int main(int argc, char *argv[])
 {
-    int nprint, i, rank, npes;
+    int nprint, i;
     char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
     FILE *fp,*traj,*erg;
     mdsys_t sys;

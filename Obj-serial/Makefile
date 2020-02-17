@@ -2,7 +2,7 @@
 SPATH=../src
 IPATH=../include
 RPATH=..
-OBJS = $(RPATH)/ljmd.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/kinetic.o  $(SPATH)/output.o  $(SPATH)/velocity.o $(SPATH)/read_input.o $(SPATH)/getline.o
+OBJS = $(SPATH)/ljmd.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/kinetic.o  $(SPATH)/output.o  $(SPATH)/velocity.o $(SPATH)/read_input.o $(SPATH)/getline.o
 EXE = $(RPATH)/ljmd.x
 CC = gcc
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3

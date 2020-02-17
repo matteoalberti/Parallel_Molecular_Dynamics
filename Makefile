@@ -24,8 +24,8 @@ clean:
 check: serial
 	$(MAKE) $(MFLAGS) -C examples check
 
-check-parallel: parallel
-	$(MAKE) $(MFLAGS) -C examples parallel
+mpi_check: parallel
+	$(MAKE) $(MFLAGS) -C examples mpi_check
 	
 test:
 	$(MAKE) $(MFLAGS) -C testing test
