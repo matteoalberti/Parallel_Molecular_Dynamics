@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 	#endif //USE_MPI
 
 	//READING DATA and if MPI is definite Broadcast
-    read_input(&sys, &restfile, &trajfile, &ergfile, &nprint);
+    read_input(&sys, restfile, trajfile, ergfile, &nprint);
 
 
     /* allocate memory */
