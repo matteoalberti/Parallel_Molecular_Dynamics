@@ -2,7 +2,7 @@
 
  
 arr=$(ls ./src/CF_folder/ | wc -l)
-for i in $(seq 0 3);
+for i in $(seq 0 2);
         do
         mv ./src/CF_folder/${i}* ./src/
         make clean
