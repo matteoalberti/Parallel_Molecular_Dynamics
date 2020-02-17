@@ -14,6 +14,8 @@ serial:
 parallel:
 	$(MAKE) $(MFLAGS) -C Obj-parallel
 
+mpi:
+	$(MAKE) $(MFLAGS) -C src mpi
 clean:
 	$(MAKE) $(MFLAGS) -C Obj-serial clean
 	$(MAKE) $(MFLAGS) -C Obj-parallel clean
