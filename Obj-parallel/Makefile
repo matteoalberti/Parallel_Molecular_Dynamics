@@ -2,7 +2,7 @@
 SPATH=../src
 IPATH=../include
 RPATH=..
-OBJS = $(SPATH)/ljmd.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/kinetic.o  $(SPATH)/output.o  $(SPATH)/velocity.o $(SPATH)/read_input.o $(SPATH)/getline.o
+OBJS = $(SPATH)/ljmd.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/kinetic.o  $(SPATH)/output.o  $(SPATH)/velocity.o $(SPATH)/read_input.o $(SPATH)/getline.o $(SPATH)/mpi_functions.o
 EXE = $(RPATH)/ljmd-parallel.x
 MPIC = mpicc
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
@@ -19,7 +19,7 @@ $(EXE): $(OBJS)
 %.o: %.c
 	$(MPIC) -c $(CFLAGS) $< -o $@ -DUSE_MPI
 
-$ljmd.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/output.h $(IPATH)/velocity.h $(IPATH)/read_input.h $(IPATH)/getline.h
+$ljmd.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/output.h $(IPATH)/velocity.h $(IPATH)/read_input.h $(IPATH)/getline.h $(IPATH)/mpi_functions.h
 
 $getline.o: $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
 $read_input.o: $(IPATH)/read_input.h $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h

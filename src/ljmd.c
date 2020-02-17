@@ -19,6 +19,7 @@
 #include "md_struct.h"
 #include "getline.h"
 #include "read_input.h"
+#include "mpi_functions.h"
 
 #ifdef USE_MPI
 #include <mpi.h>
@@ -32,15 +33,7 @@ int main(int argc, char *argv[])
     FILE *fp,*traj,*erg;
     mdsys_t sys;
 
-    //INITIALIZE MPI
-	#ifdef USE_MPI
-	  MPI_Init(&argc, &argv);
-	  MPI_Comm_size( MPI_COMM_WORLD, &sys.npes );
-	  MPI_Comm_rank( MPI_COMM_WORLD, &sys.rank );
-	#else
-	  sys.rank = 0;
-	  sys.npes = 1;
-	#endif //USE_MPI
+    initialize_mpi( &sys );
 
 	//READING DATA and if MPI is definite Broadcast
     read_input(&sys, restfile, trajfile, ergfile, &nprint);
@@ -137,9 +130,7 @@ int main(int argc, char *argv[])
     #endif //USE_MPI
 
 
-    #ifdef USE_MPI
-    MPI_Finalize();
-    #endif //USE_MPI
+    finalize_mpi(&sys);
 
     return 0;
 }
