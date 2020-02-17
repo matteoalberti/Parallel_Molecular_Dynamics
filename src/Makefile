@@ -44,7 +44,7 @@ $(OPATH)/%.so.o: %.c $(HEADERS)
 .PHONY: shared
 
 mpi: $(OBJS_mpi) $(HEADERS)
-	$(MPIC) $^ -o $(EXE) $(LDFLAGS) -DUSE_MPI # -L/opt/openmpi/4.0.1/lib 
+	$(MPIC) $^ -o $(EXE) $(LDFLAGS) -DUSE_MPI #-L/opt/openmpi/4.0.1/lib
 
 $(OPATH)/%.mpi.o: %.c $(HEADERS)
 	$(MPIC) -c $(CFLAGS) -DUSE_MPI $< -o $@ 
@@ -99,4 +99,4 @@ $(OPATH)/%.mpi.opn.so.o: %.c $(HEADERS)
 clean:
 	rm -f $(OBJS_ex) $(EXE) $(LIBS) $(OBJS_mpi) $(OBJS_so) $(OBJS_mpi_so) $(OBJS_opn_so) $(OBJS_mpi_opn_so) $(OBJS_opn) $(OBJS_mpi_opn) 
 	
-.PHONY: clean 
+.PHONY: clean

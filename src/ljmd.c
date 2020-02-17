@@ -19,15 +19,24 @@
 #include "md_struct.h"
 #include "getline.h"
 #include "read_input.h"
+#include "mpi_functions.h"
+
+#ifdef USE_MPI
+#include <mpi.h>
+#endif //USE_MPI
 
 /* main */
-int main() 
+int main(int argc, char *argv[])
 {
     int nprint, i;
     char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
     FILE *fp,*traj,*erg;
     mdsys_t sys;
 
+    //Initialize MPI
+    initialize_mpi( &sys );
+
+    //READING DATA and if MPI is definite Broadcast
     read_input(&sys, restfile, trajfile, ergfile, &nprint);
     
 
@@ -41,6 +50,12 @@ int main()
     sys.fx=(double *)malloc(sys.natoms*sizeof(double));
     sys.fy=(double *)malloc(sys.natoms*sizeof(double));
     sys.fz=(double *)malloc(sys.natoms*sizeof(double));
+	#ifdef USE_MPI
+	  // only for mpi
+	  sys.cx = (double *) malloc( sys.natoms * sizeof(double) );
+	  sys.cy = (double *) malloc( sys.natoms * sizeof(double) );
+	  sys.cz = (double *) malloc( sys.natoms * sizeof(double) );
+	#endif //USE_MPI
 
     /* read restart */
     fp=fopen(restfile,"r");
@@ -59,26 +74,31 @@ int main()
         perror("cannot read restart file");
         return 3;
     }
+    #ifdef USE_MPI
+    broadcast_arrays(&sys);
+    #endif
 
     /* initialize forces and energies.*/
     sys.nfi=0;
     force(&sys);
     ekin(&sys);
 
-
+    if ( sys.rank == 0 ) {
     erg=fopen(ergfile,"w");
     traj=fopen(trajfile,"w");
 
     printf("Starting simulation with %d atoms for %d steps.\n",sys.natoms, sys.nsteps);
    printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
+
     output(&sys, erg, traj); 
+    }
 
     /**************************************************/
     /* main MD loop */
     for(sys.nfi=1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 
         /* write output, if requested */
-        if ((sys.nfi % nprint) == 0)
+        if (( sys.rank == 0 ) && (sys.nfi % nprint) == 0)
             output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
@@ -88,9 +108,11 @@ int main()
     /**************************************************/
 
     /* clean up: close files, free memory */
+    if ( sys.rank == 0 ) {
     printf("Simulation Done.\n");
     fclose(erg);
     fclose(traj);
+    }
 
     free(sys.rx);
     free(sys.ry);
@@ -101,6 +123,15 @@ int main()
     free(sys.fx);
     free(sys.fy);
     free(sys.fz);
+    #ifdef USE_MPI
+    // free support
+    free( sys.cx );
+    free( sys.cy );
+    free( sys.cz );
+    #endif //USE_MPI
+
+
+    finalize_mpi(&sys);
 
     return 0;
 }
