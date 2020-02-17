@@ -7,8 +7,8 @@ so_ekin ="../lib/kinetic.so"
 c_ekin=ct.CDLL(so_ekin)
 so_velverlet="../lib/velocity.so"
 c_velverlet=ct.CDLL(so_velverlet)
-so_mdloop="../lib/md_loop.so"
-c_mdloop=ct.CDLL(so_mdloop)
+#so_mdloop="../lib/md_loop.so"
+#c_mdloop=ct.CDLL(so_mdloop)
 
 
 def wrap_function(lib, funcname, restype, argtypes):
@@ -35,7 +35,7 @@ class mdsys(ct.Structure):
     self.force_func = wrap_function(c_force, 'force', None, [ct.POINTER(mdsys)])
     self.ekin_func = wrap_function(c_ekin, 'ekin', None, [ct.POINTER(mdsys)])
     self.velverlet_func = wrap_function(c_ekin, 'velverlet', None, [ct.POINTER(mdsys)])
-    self.md_loop_func = wrap_function(c_mdloop, 'md_loop', None, [ct.POINTER(mdsys)])
+ #   self.md_loop_func = wrap_function(c_mdloop, 'md_loop', None, [ct.POINTER(mdsys)])
     if self.rank==0:
       with sys.stdin as input_file: 
         self.natoms=int(get_a_line(input_file));
@@ -64,8 +64,8 @@ class mdsys(ct.Structure):
   def velverlet(self):
     self.velverlet_func(self)
    
-  def md_loop(self):
-    self.md_loop_func(self) 
+ # def md_loop(self):
+ #   self.md_loop_func(self) 
    
   def alloc_ptrs(self):
     self.rx = (ct.c_double * self.natoms)()

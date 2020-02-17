@@ -17,7 +17,7 @@ LIBS= $(SRCS:%.c=$(SOPATH)/%.so)
 LIBS_MPI= $(SRCS:%.c=$(SOPATH)/%.mpi.so)
 LIBS_OPN= $(SRCS:%.c=$(SOPATH)/%.opn.so)
 LIBS_MPI_OPN= $(SRCS:%.c=$(SOPATH)/%.mpi.opn.so)
-CC = gcc
+CC = clang
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3 
 LDFLAGS=-lm -L. -g 
 OMPFLAGS=-fopenmp -D_OPENMP
@@ -27,7 +27,7 @@ default: $(EXE)
 
 .PHONY: default
 
-$(EXE): $(OBJS_ex) $(HEADERS)
+$(EXE): $(OBJS_ex)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 $(OPATH)/%.n.o: %.c $(HEADERS)
@@ -35,7 +35,7 @@ $(OPATH)/%.n.o: %.c $(HEADERS)
 	
 shared: $(LIBS)
 
-$(LIBS): $(OBJS_so) $(HEADERS)
+$(LIBS): $(OBJS_so) 
 	$(CC) $^ -o $@ $(LDFLAGS) -shared -fPIC -flto -fno-semantic-interposition
 
 $(OPATH)/%.so.o: %.c $(HEADERS)
