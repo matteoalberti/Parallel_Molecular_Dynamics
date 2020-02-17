@@ -7,3 +7,4 @@
 *.so
 examples
 __pycache__
+keep

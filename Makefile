@@ -11,7 +11,7 @@ serial:
 	$(MAKE) $(MFLAGS) -C src
 
 clean:
-	$(MAKE) $(MFLAGS) -C Obj-serial clean
+	$(MAKE) $(MFLAGS) -C src clean
 	$(MAKE) $(MFLAGS) -C examples clean
 
 check: serial
