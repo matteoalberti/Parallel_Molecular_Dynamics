@@ -43,7 +43,8 @@ int main(int argc, char *argv[])
 	#endif //USE_MPI
 
 	//READING DATA and if MPI is definite Broadcast
-    read_input(&sys, restfile, trajfile, ergfile, &nprint);
+    read_input(&sys, &restfile, &trajfile, &ergfile, &nprint);
+
 
     /* allocate memory */
     sys.rx=(double *)malloc(sys.natoms*sizeof(double));
@@ -55,6 +56,12 @@ int main(int argc, char *argv[])
     sys.fx=(double *)malloc(sys.natoms*sizeof(double));
     sys.fy=(double *)malloc(sys.natoms*sizeof(double));
     sys.fz=(double *)malloc(sys.natoms*sizeof(double));
+	#ifdef USE_MPI
+	  // only for mpi
+	  sys.cx = (double *) malloc( sys.natoms * sizeof(double) );
+	  sys.cy = (double *) malloc( sys.natoms * sizeof(double) );
+	  sys.cz = (double *) malloc( sys.natoms * sizeof(double) );
+	#endif //USE_MPI
 
     /* read restart */
     fp=fopen(restfile,"r");
@@ -73,9 +80,9 @@ int main(int argc, char *argv[])
         perror("cannot read restart file");
         return 3;
     }
-	#ifdef USE_MPI
+    #ifdef USE_MPI
     broadcast_arrays(&sys);
-	#endif
+    #endif
 
     /* initialize forces and energies.*/
     sys.nfi=0;
@@ -122,17 +129,17 @@ int main(int argc, char *argv[])
     free(sys.fx);
     free(sys.fy);
     free(sys.fz);
-	#ifdef USE_MPI
-	  // free support
-	  free( sys.cx );
-	  free( sys.cy );
-	  free( sys.cz );
-	#endif //USE_MPI
+    #ifdef USE_MPI
+    // free support
+    free( sys.cx );
+    free( sys.cy );
+    free( sys.cz );
+    #endif //USE_MPI
 
 
-	#ifdef USE_MPI
-	  MPI_Finalize();
-	#endif //USE_MPI
+    #ifdef USE_MPI
+    MPI_Finalize();
+    #endif //USE_MPI
 
     return 0;
 }

@@ -34,9 +34,9 @@ void read_input(mdsys_t *sys, char* restfile, char* trajfile, char* ergfile, int
     if(get_a_line(stdin,line)) exit(1);
     *nprint=atoi(line);
     
-	#ifdef USE_MPI
+    #ifdef USE_MPI
     broadcast_values( sys );
-	#endif //USE_MPI
+    #endif //USE_MPI
 
 }
 
