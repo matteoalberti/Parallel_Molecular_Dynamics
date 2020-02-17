@@ -23,7 +23,9 @@ for i in range(psys.nsteps):
       if psys.nfi % psys.nprint == 0:
         psys.output()
     psys.nfi+=1
-    psys.velverlet()
+    psys.vel1()
+    psys.force()
+    psys.vel2()
     psys.ekin_f()
 
 #psys.md_loop()

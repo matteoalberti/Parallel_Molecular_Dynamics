@@ -15,7 +15,8 @@
 #include "helper.h"
 #include "kinetic.h"
 #include "output.h"
-#include "velocity.h"
+#include "velocity_step1.h"
+#include "velocity_step2.h"
 #include "md_struct.h"
 #include "getline.h"
 #include "read_input.h"
@@ -102,7 +103,9 @@ int main(int argc, char *argv[])
             output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
-        velverlet(&sys);
+        vel_step1(&sys);
+        force(&sys);
+        vel_step2(&sys);
         ekin(&sys);
     }
     /**************************************************/
