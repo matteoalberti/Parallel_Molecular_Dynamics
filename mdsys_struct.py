@@ -1,17 +1,8 @@
 import ctypes as ct
 import sys
 
-so_force = "../lib/compute_forces.so"
-c_force = ct.CDLL(so_force)
-so_ekin ="../lib/kinetic.so"
-c_ekin=ct.CDLL(so_ekin)
-so_vel1="../lib/velocity_step1.so"
-c_vel1=ct.CDLL(so_vel1)
-so_vel2="../lib/velocity_step2.so"
-c_vel2=ct.CDLL(so_vel2)
-#so_mdloop="../lib/md_loop.so"
-#c_mdloop=ct.CDLL(so_mdloop)
-
+so_ljmd = "../lib/ljmd.so"
+c_ljmd = ct.CDLL(so_ljmd)
 
 def wrap_function(lib, funcname, restype, argtypes):
     """Simplify wrapping ctypes functions"""
@@ -34,10 +25,10 @@ class mdsys(ct.Structure):
   def __init__(self,rrank):
     self.nfi=0
     self.rank=rrank
-    self.force_func = wrap_function(c_force, 'force', None, [ct.POINTER(mdsys)])
-    self.ekin_func = wrap_function(c_ekin, 'ekin', None, [ct.POINTER(mdsys)])
-    self.vel1_func = wrap_function(c_vel1, 'vel_step1', None, [ct.POINTER(mdsys)])
-    self.vel2_func = wrap_function(c_vel1, 'vel_step2', None, [ct.POINTER(mdsys)])
+    self.force_func = wrap_function(c_ljmd, 'force', None, [ct.POINTER(mdsys)])
+    self.ekin_func = wrap_function(c_ljmd, 'ekin', None, [ct.POINTER(mdsys)])
+    self.vel1_func = wrap_function(c_ljmd, 'vel_step1', None, [ct.POINTER(mdsys)])
+    self.vel2_func = wrap_function(c_ljmd, 'vel_step2', None, [ct.POINTER(mdsys)])
  #   self.md_loop_func = wrap_function(c_mdloop, 'md_loop', None, [ct.POINTER(mdsys)])
     if self.rank==0:
       with sys.stdin as input_file: 
@@ -69,9 +60,6 @@ class mdsys(ct.Structure):
   
   def vel2(self):
     self.vel2_func(self)
-  
- # def md_loop(self):
- #   self.md_loop_func(self) 
    
   def alloc_ptrs(self):
     self.rx = (ct.c_double * self.natoms)()
