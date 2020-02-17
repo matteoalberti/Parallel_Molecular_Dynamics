@@ -2,7 +2,7 @@
 SPATH=../src
 IPATH=../include
 RPATH=..
-OBJS = $(RPATH)/ljmd-parallel.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/kinetic.o  $(SPATH)/output.o  $(SPATH)/velocity.o $(SPATH)/read_input.o $(SPATH)/getline.o
+OBJS = $(SPATH)/ljmd.o $(SPATH)/compute_forces.o  $(SPATH)/helper.o  $(SPATH)/kinetic.o  $(SPATH)/output.o  $(SPATH)/velocity.o $(SPATH)/read_input.o $(SPATH)/getline.o
 EXE = $(RPATH)/ljmd-parallel.x
 MPIC = mpicc
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
@@ -19,19 +19,19 @@ $(EXE): $(OBJS)
 %.o: %.c
 	$(MPIC) -c $(CFLAGS) $< -o $@ -DUSE_MPI
 
-ljmd-parallel.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/output.h $(IPATH)/velocity.h $(IPATH)/read_input.h $(IPATH)/getline.h
+$ljmd.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/output.h $(IPATH)/velocity.h $(IPATH)/read_input.h $(IPATH)/getline.h
 
-$(SPATH)/getline.o: $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
-$(SPATH)/read_input.o: $(IPATH)/read_input.h $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
-$(SPATH)/compute_forces.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h
-$(SPATH)/helper.o: $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h
-$(SPATH)/kinetic.o: $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/constants.h
-$(SPATH)/output.o: $(IPATH)/output.h $(IPATH)/md_struct.h $(IPATH)/constants.h
-$(SPATH)/velocity.o: $(IPATH)/velocity.h $(IPATH)/compute_forces.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$getline.o: $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$read_input.o: $(IPATH)/read_input.h $(IPATH)/getline.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$compute_forces.o: $(IPATH)/compute_forces.h $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$helper.o: $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$kinetic.o: $(IPATH)/kinetic.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$output.o: $(IPATH)/output.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+$velocity.o: $(IPATH)/velocity.h $(IPATH)/compute_forces.h $(IPATH)/md_struct.h $(IPATH)/constants.h
 
 clean:
 	rm -f $(OBJS) $(EXE)
 
 .PHONY: clean
 
-ljmd-parallel.o: ljmd.c
+##ljmd-parallel.o: ljmd.c
