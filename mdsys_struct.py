@@ -5,8 +5,10 @@ so_force = "../lib/compute_forces.so"
 c_force = ct.CDLL(so_force)
 so_ekin ="../lib/kinetic.so"
 c_ekin=ct.CDLL(so_ekin)
-so_velverlet="../lib/velocity.so"
-c_velverlet=ct.CDLL(so_velverlet)
+so_vel1="../lib/velocity_step1.so"
+c_vel1=ct.CDLL(so_vel1)
+so_vel2="../lib/velocity_step2.so"
+c_vel2=ct.CDLL(so_vel2)
 #so_mdloop="../lib/md_loop.so"
 #c_mdloop=ct.CDLL(so_mdloop)
 
@@ -34,7 +36,8 @@ class mdsys(ct.Structure):
     self.rank=rrank
     self.force_func = wrap_function(c_force, 'force', None, [ct.POINTER(mdsys)])
     self.ekin_func = wrap_function(c_ekin, 'ekin', None, [ct.POINTER(mdsys)])
-    self.velverlet_func = wrap_function(c_ekin, 'velverlet', None, [ct.POINTER(mdsys)])
+    self.vel1_func = wrap_function(c_vel1, 'vel_step1', None, [ct.POINTER(mdsys)])
+    self.vel2_func = wrap_function(c_vel1, 'vel_step2', None, [ct.POINTER(mdsys)])
  #   self.md_loop_func = wrap_function(c_mdloop, 'md_loop', None, [ct.POINTER(mdsys)])
     if self.rank==0:
       with sys.stdin as input_file: 
@@ -61,9 +64,12 @@ class mdsys(ct.Structure):
   def ekin_f(self):
     self.ekin_func(self)
  
-  def velverlet(self):
-    self.velverlet_func(self)
-   
+  def vel1(self):
+    self.vel1_func(self)
+  
+  def vel2(self):
+    self.vel2_func(self)
+  
  # def md_loop(self):
  #   self.md_loop_func(self) 
    
