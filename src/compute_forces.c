@@ -94,6 +94,8 @@ void force(mdsys_t *sys)
                 sys->cy[j] -= ry;
                 sys->cz[j] -= rz;
                 sys->t_elapsed += timer_seconds() - sys->t_elapsed_start;
+           }
+        }
   		
 #else// USE_MPI
                
