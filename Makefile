@@ -3,6 +3,8 @@ SHELL=/bin/sh
 ############################################
 # derived makefile variables
 OBJ_SERIAL=$(SRC:src/%.f90=Obj-serial/%.o)
+OBJ_PARALLEL=$(SRC:src/%.f90=Obj-parallel/%.o)
+nprocs=1
 ############################################
 
 default: serial
@@ -41,6 +43,7 @@ openmp:
 	$(MAKE) $(MFLAGS) -C src openmp
 
 mpi_openmp:
-	$(MAKE) $(MFLAGS) -C src mpi_openmp	
-	
-	
+	$(MAKE) $(MFLAGS) -C src mpi_openmp
+
+mpi_check: mpi
+	$(MAKE) $(MFLAGS) -C examples mpi_check nprocs=$(nprocs)
