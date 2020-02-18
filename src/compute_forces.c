@@ -42,19 +42,10 @@ void force(mdsys_t *sys)
     MPI_Bcast( sys->rx, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
     MPI_Bcast( sys->ry, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
     MPI_Bcast( sys->rz, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
-
 #else
-	  
-    double *fx, *fy, *fz;
-
-    fx = sys->fx; 
-    fy = sys->fy;
-    fz = sys->fz;
-
     azzero(sys->fx,sys->natoms);
     azzero(sys->fy,sys->natoms);
     azzero(sys->fz,sys->natoms);
-    
 #endif //USE_MPI
 
 
@@ -63,7 +54,6 @@ void force(mdsys_t *sys)
      // ii=i+sys->rank;
     //  if (ii > (sys->natoms - 1)) break;
       for(j=i+1; j < (sys->natoms); ++j) {
-     
 #else
 
 #pragma omp parallel for schedule(dynamic) private(i, j, r, rx, ry, rz, ffac) reduction(+ : epot) 
