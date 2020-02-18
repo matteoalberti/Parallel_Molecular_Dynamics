@@ -15,7 +15,8 @@ HEADERS = $(wildcard $(IPATH)/*.h)
 EXE = ../ljmd.x
 LIB= $(SOPATH)/ljmd.so
 CC = gcc
-CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
+
+CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3  -std=c99
 LDFLAGS=-lm -L. -g 
 OMPFLAGS=-fopenmp -D_OPENMP
 MPIC = mpicc
