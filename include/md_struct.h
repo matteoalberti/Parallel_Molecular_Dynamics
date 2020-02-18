@@ -5,6 +5,10 @@
 #endif //USE_MPI
 #include "constants.h"
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif //_OPENMP
+
 /* structure to hold the complete information
  * about the MD system */
 struct _mdsys {
@@ -17,6 +21,7 @@ struct _mdsys {
     double *fx, *fy, *fz;
 	double *cx, *cy, *cz;
     double t_elapsed,t_elapsed_start, t_elapsed_slow;
+
 };
 typedef struct _mdsys mdsys_t;
 

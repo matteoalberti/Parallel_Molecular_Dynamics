@@ -6,5 +6,5 @@
 .directory
 *.so
 examples
+mynotes*
 __pycache__
-keep
