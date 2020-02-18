@@ -1,0 +1,23 @@
+# started on Tue Feb 18 14:48:41 2020
+
+
+ Performance counter stats for 'python3 ../ljmd.py' (3 runs):
+
+      43125.883432 task-clock                #    0.994 CPUs utilized            ( +- 99.93% )
+            25,719 context-switches          #    0.596 K/sec                    ( +- 99.60% )
+                 3 cpu-migrations            #    0.000 K/sec                    ( +- 25.00% )
+             1,759 page-faults               #    0.041 K/sec                    ( +- 11.56% )
+   123,648,290,237 cycles                    #    2.867 GHz                      ( +- 99.93% ) [90.00%]
+    49,888,108,425 stalled-cycles-frontend   #   40.35% frontend cycles idle     ( +- 99.90% ) [90.00%]
+    22,902,687,152 stalled-cycles-backend    #   18.52% backend  cycles idle     ( +- 99.84% ) [80.00%]
+   160,701,013,993 instructions              #    1.30  insns per cycle        
+                                             #    0.31  stalled cycles per insn  ( +- 99.96% ) [90.00%]
+    34,307,152,358 branches                  #  795.512 M/sec                    ( +- 99.96% ) [90.00%]
+       859,417,602 branch-misses             #    2.51% of all branches          ( +- 99.92% ) [90.00%]
+    29,587,718,217 L1-dcache-loads           #  686.078 M/sec                    ( +- 99.97% ) [90.00%]
+       872,915,588 L1-dcache-load-misses     #    2.95% of all L1-dcache hits    ( +- 99.84% ) [90.00%]
+        13,451,729 LLC-loads                 #    0.312 M/sec                    ( +- 95.66% ) [90.00%]
+           370,220 LLC-load-misses           #    2.75% of all LL-cache hits     ( +- 94.54% ) [90.00%]
+
+      43.364876807 seconds time elapsed                                          ( +- 99.90% )
+
