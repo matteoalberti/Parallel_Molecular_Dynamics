@@ -10,45 +10,41 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <math.h>
+
 #include "compute_forces.h"
 #include "helper.h"
-#include "kinetic_energy.h"
+#include "kinetic.h"
 #include "output.h"
-#include "velocity.h"
+#include "velocity_step1.h"
+#include "velocity_step2.h"
 #include "md_struct.h"
 #include "getline.h"
+#include "read_input.h"
+#include "mpi_functions.h"
+
+#ifdef USE_MPI
+#include <mpi.h>
+#endif //USE_MPI
 
 /* main */
-int main(int argc, char **argv) 
+int main()
 {
     int nprint, i;
-    char restfile[BLEN], trajfile[BLEN], ergfile[BLEN], line[BLEN];
+    char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
     FILE *fp,*traj,*erg;
     mdsys_t sys;
 
-    /* read input file */
-    if(get_a_line(stdin,line)) return 1;
-    sys.natoms=atoi(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.mass=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.epsilon=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.sigma=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.rcut=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.box=atof(line);
-    if(get_a_line(stdin,restfile)) return 1;
-    if(get_a_line(stdin,trajfile)) return 1;
-    if(get_a_line(stdin,ergfile)) return 1;
-    if(get_a_line(stdin,line)) return 1;
-    sys.nsteps=atoi(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.dt=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    nprint=atoi(line);
+    //Initialize MPI
+    initialize_mpi( &sys );
 
+    //READING DATA and if MPI is definite Broadcast
+    if (sys.rank==0){
+    read_input(&sys, restfile, trajfile, ergfile, &nprint);}
+    
+#ifdef USE_MPI
+    broadcast_values(&sys);
+#endif //USE_MPI
+    
     /* allocate memory */
     sys.rx=(double *)malloc(sys.natoms*sizeof(double));
     sys.ry=(double *)malloc(sys.natoms*sizeof(double));
@@ -59,8 +55,15 @@ int main(int argc, char **argv)
     sys.fx=(double *)malloc(sys.natoms*sizeof(double));
     sys.fy=(double *)malloc(sys.natoms*sizeof(double));
     sys.fz=(double *)malloc(sys.natoms*sizeof(double));
+	#ifdef USE_MPI
+	  // only for mpi
+	  sys.cx = (double *) malloc( sys.natoms * sizeof(double) );
+	  sys.cy = (double *) malloc( sys.natoms * sizeof(double) );
+	  sys.cz = (double *) malloc( sys.natoms * sizeof(double) );
+	#endif //USE_MPI
 
     /* read restart */
+    if (sys.rank==0){
     fp=fopen(restfile,"r");
     if(fp) {
         for (i=0; i<sys.natoms; ++i) {
@@ -77,37 +80,56 @@ int main(int argc, char **argv)
         perror("cannot read restart file");
         return 3;
     }
+    }
+    #ifdef USE_MPI
+    broadcast_arrays(&sys);
+    #endif
 
     /* initialize forces and energies.*/
     sys.nfi=0;
     force(&sys);
+    if (sys.rank==0){
     ekin(&sys);
-    
+    }
+    if ( sys.rank == 0 ) {
     erg=fopen(ergfile,"w");
     traj=fopen(trajfile,"w");
 
     printf("Starting simulation with %d atoms for %d steps.\n",sys.natoms, sys.nsteps);
     printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
-    output(&sys, erg, traj);
+
+    output(&sys, erg, traj); 
+    }
 
     /**************************************************/
     /* main MD loop */
+  //  nprint=1;
     for(sys.nfi=1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 
         /* write output, if requested */
-        if ((sys.nfi % nprint) == 0)
+        if (( sys.rank == 0 ) && (sys.nfi % nprint) == 0)
             output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
-        velverlet(&sys);
-        ekin(&sys);
+       
+        if (sys.rank == 0){
+          vel_step1(&sys);}
+          
+        force(&sys);
+        
+       if (sys.rank == 0){
+        vel_step2(&sys);
+        ekin(&sys);}
     }
     /**************************************************/
 
     /* clean up: close files, free memory */
+    if ( sys.rank == 0 ) {
     printf("Simulation Done.\n");
+    printf("Time to solution : %f\n", sys.t_elapsed_slow);
     fclose(erg);
     fclose(traj);
+    }
 
     free(sys.rx);
     free(sys.ry);
@@ -118,6 +140,15 @@ int main(int argc, char **argv)
     free(sys.fx);
     free(sys.fy);
     free(sys.fz);
+    #ifdef USE_MPI
+    // free support
+    free( sys.cx );
+    free( sys.cy );
+    free( sys.cz );
+    #endif //USE_MPI
+
+
+    finalize_mpi(&sys);
 
     return 0;
 }

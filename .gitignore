@@ -5,3 +5,6 @@
 *.log
 .directory
 *.so
+examples
+mynotes*
+__pycache__
