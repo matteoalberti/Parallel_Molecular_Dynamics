@@ -20,8 +20,9 @@
 /* compute forces */
 void force(mdsys_t *sys) 
 {
-    double rsq,rcsq,ffac;
+    double rsq, ffac;
     double rx,ry,rz;
+    double rcsq =  sys->rcut * sys->rcut;
     int i,j;
     sys-> t_elapsed = 0;
     sys-> t_elapsed_slow = 0;
@@ -49,16 +50,12 @@ void force(mdsys_t *sys)
     double c12    =  4.0*sys->epsilon*sigma6*sigma6;
     double c6     = -4.0*sys->epsilon*sigma6;
     
-#endif //USE_MPI
-
 #ifdef USE_MPI
     for(i=sys->rank; i < (sys->natoms) ; i+=sys->nps) {
       for(j=i+1; j < (sys->natoms); ++j) {
 #else
 
-	rcsq =   sys->rcut * sys->rcut;
-
-#pragma omp parallel for schedule(dynamic) private(i, j, r, rx, ry, rz, ffac) reduction(+ : epot) 
+#pragma omp parallel for schedule(dynamic) private(i, j, rsq, rx, ry, rz, ffac) reduction(+ : epot) 
     for(i=0; i < (sys->natoms) - 1; ++i) {
 
 	double fx_i, fy_i, fz_i;
