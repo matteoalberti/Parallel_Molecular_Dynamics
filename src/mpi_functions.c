@@ -3,6 +3,7 @@
 #ifdef USE_MPI
 #include <mpi.h>
 #endif //USE_MPI
+#include "stdlib.h"
 
 void initialize_mpi ( mdsys_t * sys ) {
 
@@ -21,8 +22,25 @@ void initialize_mpi ( mdsys_t * sys ) {
 
 }
 
-void finalize_mpi () {
+void allocate_cs ( mdsys_t * sys ) {
+#ifdef USE_MPI
+    sys->cx = (double *) malloc( sys->natoms * sizeof(double) );
+	  sys->cy = (double *) malloc( sys->natoms * sizeof(double) );
+	  sys->cz = (double *) malloc( sys->natoms * sizeof(double) );
+#endif
+}
 
+
+void free_cs ( mdsys_t * sys ) {
+#ifdef USE_MPI
+    free( sys->cx );
+    free( sys->cy );
+    free( sys->cz );
+#endif
+}
+
+void finalize_mpi () {
+  
 #ifdef USE_MPI
   MPI_Finalize();
 #endif //USE_MPI
