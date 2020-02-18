@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
     traj=fopen(trajfile,"w");
 
     printf("Starting simulation with %d atoms for %d steps.\n",sys.natoms, sys.nsteps);
-   printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
+    printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
 
     output(&sys, erg, traj); 
     }
@@ -126,6 +126,7 @@ int main(int argc, char *argv[])
     /* clean up: close files, free memory */
     if ( sys.rank == 0 ) {
     printf("Simulation Done.\n");
+    printf("Time to solution : %f\n", sys.t_elapsed_slow);
     fclose(erg);
     fclose(traj);
     }
