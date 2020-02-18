@@ -15,7 +15,8 @@ struct _mdsys {
     double *rx, *ry, *rz;
     double *vx, *vy, *vz;
     double *fx, *fy, *fz;
-	  double *cx, *cy, *cz;
+	double *cx, *cy, *cz;
+    double t_elapsed,t_elapsed_start, t_elapsed_slow;
 };
 typedef struct _mdsys mdsys_t;
 
