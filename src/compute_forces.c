@@ -23,38 +23,26 @@ void force(mdsys_t *sys)
     double rsq,rcsq,ffac;
     double rx,ry,rz;
     int i,j;
-    double epot = 0.0;
     sys-> t_elapsed = 0;
     sys-> t_elapsed_slow = 0;
-    sys->epot=0.0;
 
-    /* zero energy and forces */
 #ifdef USE_MPI
-    azzero(sys->cx,sys->natoms);
-    azzero(sys->cy,sys->natoms);
-    azzero(sys->cz,sys->natoms);
-    
-    azzero(sys->fx,sys->natoms);
-    azzero(sys->fy,sys->natoms);
-    azzero(sys->fz,sys->natoms);
-
     /* communicate to all the processes previous step update of positions */
     MPI_Bcast( sys->rx, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
     MPI_Bcast( sys->ry, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
     MPI_Bcast( sys->rz, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
+    
+    azzero(sys->cx,sys->natoms);
+    azzero(sys->cy,sys->natoms);
+    azzero(sys->cz,sys->natoms);
+#endif//USE_MPI
 
-#else
-	  
-    double *fx, *fy, *fz;
-
-    fx = sys->fx; 
-    fy = sys->fy;
-    fz = sys->fz;
-
+    /* zero energy and forces */
+    double epot = 0.0;
+    sys->epot=0.0;
     azzero(sys->fx,sys->natoms);
     azzero(sys->fy,sys->natoms);
     azzero(sys->fz,sys->natoms);
-
 
     double sigma=sys->sigma;
     double sigma6 = sigma* sigma* sigma*sigma* sigma* sigma;
@@ -63,20 +51,22 @@ void force(mdsys_t *sys)
     
 #endif //USE_MPI
 
-
 #ifdef USE_MPI
     for(i=sys->rank; i < (sys->natoms) ; i+=sys->nps) {
       for(j=i+1; j < (sys->natoms); ++j) {
-     
 #else
 
 	rcsq =   sys->rcut * sys->rcut;
 
 #pragma omp parallel for schedule(dynamic) private(i, j, r, rx, ry, rz, ffac) reduction(+ : epot) 
-    for(i=0; i < (sys->natoms); ++i) {
-        for(j=i+1; j < (sys->natoms); ++j) {
+    for(i=0; i < (sys->natoms) - 1; ++i) {
+
+	double fx_i, fy_i, fz_i;
+        fx_i = fy_i = fz_i = 0.0;
+
+        for(j= i+1 ; j < (sys->natoms); ++j) {
             
-#endif      
+#endif//USE_MPI      
             
             /* get distance between particle i and j */
             rx=pbc(sys->rx[i] - sys->rx[j], 0.5*sys->box);
@@ -107,23 +97,30 @@ void force(mdsys_t *sys)
                 sys->cy[j] -= ry;
                 sys->cz[j] -= rz;
                 sys->t_elapsed += timer_seconds() - sys->t_elapsed_start;
-#else                
-           
-        fx[i] += rx;
-        fy[i] += ry;
-        fz[i] += rz;
+  		
+#else// USE_MPI
+               
+		fx_i += rx;
+		fy_i += ry;
+		fz_i += rz;           
+		
+#pragma omp atomic
+		sys->fx[j] -= rx;
+#pragma omp atomic
+        	sys->fy[j] -= ry;
+#pragma omp atomic
+	        sys->fz[j] -= rz;
+           }
+        }
 
 #pragma omp atomic
-        fx[j] -= rx;
+		sys->fx[i] += fx_i;
 #pragma omp atomic
-        fy[j] -= ry;
+		sys->fy[i] += fy_i;
 #pragma omp atomic
-        fz[j] -= rz;
+		sys->fz[i] += fz_i;
   		
-#endif
-              
-            }
-        }
+#endif //USE_MPI         
     }
 
 #ifdef USE_MPI
