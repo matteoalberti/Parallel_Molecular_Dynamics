@@ -1,6 +1,6 @@
 # -*- Makefile -*-
 
-SPATH=../../src
+SPATH=../../Objects
 IPATH=../../include
 #RPATH=..
 

@@ -8,3 +8,4 @@
 examples
 mynotes*
 __pycache__
+*.sh

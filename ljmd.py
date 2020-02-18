@@ -1,7 +1,6 @@
 import mdsys_struct as md
 
 #calling the system variable "sys" would be confusing as "sys" is a rather standart module, so we call it psys
-#it reads the input pile from stdin in constructor
 psys=md.mdsys()
 
 #initialize MPI if defined and get rank, rank zero if MPI not defined
