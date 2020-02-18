@@ -38,9 +38,13 @@ int main(int argc, char *argv[])
     initialize_mpi( &sys );
 
     //READING DATA and if MPI is definite Broadcast
-    read_input(&sys, restfile, trajfile, ergfile, &nprint);
+    if (sys.rank==0){
+    read_input(&sys, restfile, trajfile, ergfile, &nprint);}
     
-
+#ifdef USE_MPI
+    broadcast_values(&sys);
+#endif //USE_MPI
+    
     /* allocate memory */
     sys.rx=(double *)malloc(sys.natoms*sizeof(double));
     sys.ry=(double *)malloc(sys.natoms*sizeof(double));
@@ -59,6 +63,7 @@ int main(int argc, char *argv[])
 	#endif //USE_MPI
 
     /* read restart */
+    if (sys.rank==0){
     fp=fopen(restfile,"r");
     if(fp) {
         for (i=0; i<sys.natoms; ++i) {
@@ -75,6 +80,7 @@ int main(int argc, char *argv[])
         perror("cannot read restart file");
         return 3;
     }
+    }
     #ifdef USE_MPI
     broadcast_arrays(&sys);
     #endif
@@ -82,8 +88,9 @@ int main(int argc, char *argv[])
     /* initialize forces and energies.*/
     sys.nfi=0;
     force(&sys);
+    if (sys.rank==0){
     ekin(&sys);
-
+    }
     if ( sys.rank == 0 ) {
     erg=fopen(ergfile,"w");
     traj=fopen(trajfile,"w");
@@ -96,6 +103,7 @@ int main(int argc, char *argv[])
 
     /**************************************************/
     /* main MD loop */
+  //  nprint=1;
     for(sys.nfi=1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 
         /* write output, if requested */
@@ -103,10 +111,15 @@ int main(int argc, char *argv[])
             output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
-        vel_step1(&sys);
+       
+        if (sys.rank == 0){
+          vel_step1(&sys);}
+          
         force(&sys);
+        
+       if (sys.rank == 0){
         vel_step2(&sys);
-        ekin(&sys);
+        ekin(&sys);}
     }
     /**************************************************/
 

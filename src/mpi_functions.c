@@ -7,9 +7,9 @@
 void initialize_mpi ( mdsys_t * sys ) {
 
 #ifdef USE_MPI
-  int * argc_fake;
-  char *** argv_fake;
-  MPI_Init( argc_fake, argv_fake );
+//  int * argc_fake;
+ // char *** argv_fake;
+  MPI_Init(NULL,NULL);
   MPI_Comm_size( MPI_COMM_WORLD, &sys->nps );
   MPI_Comm_rank( MPI_COMM_WORLD, &sys->rank );
 #else
@@ -27,6 +27,6 @@ void finalize_mpi () {
   MPI_Finalize();
 #endif //USE_MPI
 
-  return;
+  return;  
 
 }
