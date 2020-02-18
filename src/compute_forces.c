@@ -44,7 +44,6 @@ void force(mdsys_t *sys)
 
     
 #ifdef USE_MPI
-    int ii=0;
     for(i=sys->rank; i < (sys->natoms) ; i+=sys->nps) {
      // ii=i+sys->rank;
     //  if (ii > (sys->natoms - 1)) break;

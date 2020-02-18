@@ -27,7 +27,7 @@
 #endif //USE_MPI
 
 /* main */
-int main(int argc, char *argv[])
+int main()
 {
     int nprint, i;
     char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
