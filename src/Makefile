@@ -1,6 +1,6 @@
 # -*- Makefile -*-
 IPATH=../include
-OPATH=../Obj-serial
+OPATH=../Objects
 SOPATH=../lib
 SRCS = $(wildcard *.c)
 OBJS_ex = $(SRCS:%.c=$(OPATH)/%.n.o)
