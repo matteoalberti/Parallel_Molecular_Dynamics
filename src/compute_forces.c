@@ -20,7 +20,7 @@
 /* compute forces */
 void force(mdsys_t *sys) 
 {
-    double r,ffac;
+    double rsq,rcsq,ffac;
     double rx,ry,rz;
     int i,j;
     double epot = 0.0;
@@ -55,17 +55,22 @@ void force(mdsys_t *sys)
     azzero(sys->fy,sys->natoms);
     azzero(sys->fz,sys->natoms);
 
+
+    double sigma=sys->sigma;
+    double sigma6 = sigma* sigma* sigma*sigma* sigma* sigma;
+    double c12    =  4.0*sys->epsilon*sigma6*sigma6;
+    double c6     = -4.0*sys->epsilon*sigma6;
     
 #endif //USE_MPI
 
 
 #ifdef USE_MPI
     for(i=sys->rank; i < (sys->natoms) ; i+=sys->nps) {
-     // ii=i+sys->rank;
-    //  if (ii > (sys->natoms - 1)) break;
       for(j=i+1; j < (sys->natoms); ++j) {
      
 #else
+
+	rcsq =   sys->rcut * sys->rcut;
 
 #pragma omp parallel for schedule(dynamic) private(i, j, r, rx, ry, rz, ffac) reduction(+ : epot) 
     for(i=0; i < (sys->natoms); ++i) {
@@ -77,15 +82,18 @@ void force(mdsys_t *sys)
             rx=pbc(sys->rx[i] - sys->rx[j], 0.5*sys->box);
             ry=pbc(sys->ry[i] - sys->ry[j], 0.5*sys->box);
             rz=pbc(sys->rz[i] - sys->rz[j], 0.5*sys->box);
-            r = sqrt(rx*rx + ry*ry + rz*rz);
+            rsq = rx*rx + ry*ry + rz*rz;
       
             /* compute force and energy if within cutoff */
-            if (r < sys->rcut) {
-                ffac = -4.0*sys->epsilon*(-12.0*pow(sys->sigma/r,12.0)
-                                         +6*pow(sys->sigma/r,6.0))/(r*r);
-                
-                epot += 4.0*sys->epsilon*(pow(sys->sigma/r,12.0)
-                                               -pow(sys->sigma/r,6.0));
+            if (rsq < rcsq) {
+    
+                double r6, rinv;
+                rinv = 1.0/rsq;
+                r6   = rinv*rinv*rinv;
+                ffac = (c12*12.0*r6 + 6.0*c6)*r6*rinv;
+
+                epot  += r6*(c12*r6 + c6) ;
+
                 rx *= ffac;
                 ry *= ffac;
                 rz *= ffac;
