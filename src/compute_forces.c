@@ -30,11 +30,7 @@ void force(mdsys_t *sys)
   azzero(fy, sys->natoms );
   azzero(fz, sys->natoms );
 
-#if _OPENMP
-#pragma omp parallel reduction(+ : epot) 
-  { // begin of parallel region
-#pragma omp for schedule(dynamic) private(i, j, r, rx, ry, rz, ffac)  
-#endif 
+#pragma omp parallel for schedule(dynamic) private(i, j, r, rx, ry, rz, ffac) reduction(+ : epot) 
    for(i=0; i < (sys->natoms)-1; ++i) {
 
      for(j=i+1; j < (sys->natoms); ++j) {
@@ -62,25 +58,20 @@ void force(mdsys_t *sys)
         fy[i] += ry;
         fz[i] += rz;
 
-#if _OPENMP
+
 #pragma omp atomic
-#endif
         fx[j] -= rx;
-#if _OPENMP
+
 #pragma omp atomic
-#endif
         fy[j] -= ry;
-#if _OPENMP
+
 #pragma omp atomic
-#endif
         fz[j] -= rz;
   		
        }
      }
    }
-#if _OPENMP
-  }// end of parallel region
-#endif
+   
    sys->epot = epot;
 
 }

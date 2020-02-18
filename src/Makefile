@@ -20,7 +20,7 @@ LIBS_MPI_OPN= $(SRCS:%.c=$(SOPATH)/%.mpi.opn.so)
 CC = gcc
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3 
 LDFLAGS=-lm -L. -g 
-OMPFLAGS=-fopenmp -D_OPENMP
+OMPFLAGS=-fopenmp #-D_OPENMP
 MPIC = mpicc
 
 default: $(EXE)
