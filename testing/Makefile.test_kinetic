@@ -1,0 +1,30 @@
+# -*- Makefile -*-
+IPATH=../include
+SPATH=../src
+OBJS = test_kinetic.o kinetic.o
+EXE = test_kinetic.x
+CC = gcc
+CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
+LDLIBS=-lm
+
+default: $(EXE)
+
+.PHONY: default
+
+$(EXE): $(OBJS)
+	$(CC) $^ -o $@
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o $@
+	
+kinetic.o: $(SPATH)/kinetic.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o kinetic.o
+	
+test_kinetic.o: $(IPATH)/md_struct.h $(IPATH)/kinetic.h $(IPATH)/constants.h
+
+kinetic.o: $(IPATH)/md_struct.h $(IPATH)/constants.h
+
+clean:
+	rm -f $(OBJS) $(EXE)
+
+.PHONY: clean

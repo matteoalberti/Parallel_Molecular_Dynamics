@@ -38,7 +38,8 @@ void read_input(mdsys_t *sys, char* restfile, char* trajfile, char* ergfile, int
 }
 
 void broadcast_values ( mdsys_t * sys ) {
-
+//to disable compile warning
+  sys->natoms=sys->natoms;
 #ifdef USE_MPI
   /* Broadcasting from rank 0 to all what has been read */
   MPI_Bcast( &( sys->natoms ), 1, MPI_INT, 0, MPI_COMM_WORLD );
@@ -56,7 +57,8 @@ void broadcast_values ( mdsys_t * sys ) {
 }
 
 void broadcast_arrays ( mdsys_t * sys ) {
-
+  //to disable compile warning
+  sys->natoms=sys->natoms;
 #ifdef USE_MPI
   /* Broadcasting from rank 0 to all what has been read */
   MPI_Bcast( sys->rx, sys->natoms, MPI_DOUBLE, 0, MPI_COMM_WORLD );
