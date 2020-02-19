@@ -3,7 +3,7 @@
  * units: Length=Angstrom, Mass=amu; Energy=kcal
  *
  * baseline c version.
- */
+*/
 
 #include <stdio.h>
 #include <string.h>
@@ -55,12 +55,12 @@ int main()
     sys.fx=(double *)malloc(sys.natoms*sizeof(double));
     sys.fy=(double *)malloc(sys.natoms*sizeof(double));
     sys.fz=(double *)malloc(sys.natoms*sizeof(double));
-	#ifdef USE_MPI
-	  // only for mpi
-	  sys.cx = (double *) malloc( sys.natoms * sizeof(double) );
-	  sys.cy = (double *) malloc( sys.natoms * sizeof(double) );
-	  sys.cz = (double *) malloc( sys.natoms * sizeof(double) );
-	#endif //USE_MPI
+#ifdef USE_MPI
+    // only for mpi
+    sys.cx = (double *) malloc( sys.natoms * sizeof(double) );
+    sys.cy = (double *) malloc( sys.natoms * sizeof(double) );
+    sys.cz = (double *) malloc( sys.natoms * sizeof(double) );
+#endif //USE_MPI
 
     /* read restart */
     if (sys.rank==0){

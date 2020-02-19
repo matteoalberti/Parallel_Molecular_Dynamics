@@ -1,6 +1,6 @@
 # -*- Makefile -*-
 IPATH=../include
-OPATH=../Obj-serial
+OPATH=../Objects
 SOPATH=../lib
 SRCS = $(wildcard *.c)
 OBJS_ex = $(SRCS:%.c=$(OPATH)/%.n.o)
@@ -18,7 +18,7 @@ CC = gcc
 
 CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3  -std=c99
 LDFLAGS=-lm -L. -g 
-OMPFLAGS=-fopenmp -D_OPENMP
+OMPFLAGS=-fopenmp #-D_OPENMP
 MPIC = mpicc
 
 default: serial
