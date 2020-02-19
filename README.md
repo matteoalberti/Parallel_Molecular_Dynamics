@@ -1,9 +1,9 @@
 ### contributors
 
-- davydenk Irina Davydenkova
-- ElenaDep Elena De Paoli
-- NataNazar Natalia Nazarova
-- matteoalberti Matteo Alberti
+- davydenk Irina Davydenkova : **python wrapper**
+- ElenaDep Elena De Paoli : **openmp**
+- NataNazar Natalia Nazarova : **code optimization**
+- matteoalberti Matteo Alberti : **mpi**
 
 This package contains simplified MD code with multi-threading
 parallelization for simulating atoms with a Lennard-Jones potential.
@@ -45,6 +45,19 @@ openmpi version 3 or higher
   - `make check_c` to check c code (after `make` or `make openmp`)
   - `make mpi_check_c` to check c mpi code (after `make mpi` or `make mpi_openmp`)
 
- 
+--------------
 
- 
+## Reports
+
+----------------------
+
+### MPI Implementation
+
+A complete report is available inside `/mpi_report` folder.
+
+We want to report here just the **Strong Scaling** plots
+
+![](./mpi_report/scaling.png)
+
+--------------------------------
+
