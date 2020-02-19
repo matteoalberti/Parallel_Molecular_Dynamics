@@ -1,9 +1,9 @@
 ### contributors
 
-- davydenk Irina Davydenkova : **python wrapper**
-- ElenaDep Elena De Paoli : **openmp**
-- NataNazar Natalia Nazarova : **code optimization**
-- matteoalberti Matteo Alberti : **mpi**
+- matteoalberti Matteo Alberti
+- davydenk Irina Davydenkova 
+- ElenaDep Elena De Paoli 
+- NataNazar Natalia Nazarova 
 
 This package contains simplified MD code with multi-threading
 parallelization for simulating atoms with a Lennard-Jones potential.
