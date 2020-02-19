@@ -61,3 +61,8 @@ We want to report here just the **Strong Scaling** plots
 
 --------------------------------
 
+### OPENMP Implementation
+
+A complete report is availabe inside `openmp_report` folder
+
+![](./openmp_report/data/qgpu/openmp_timebenchmark.png)
