@@ -28,6 +28,8 @@ script:
   - make clean
   - make shared_openmp
   - make check
+  - make clean
+  - make test
   
   
   

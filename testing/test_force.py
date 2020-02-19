@@ -22,7 +22,7 @@ psys.fx = (ct.c_double * psys.natoms)()
 psys.fy = (ct.c_double * psys.natoms)()
 psys.fz = (ct.c_double * psys.natoms)()
 
-eps = 1e-10;
+eps = 1e-5;
     
 #Set position of atoms - r[0] r[1] fixed on ax,ay and sigma distance between az | r[2] outside
 psys.rx[0]=1;
@@ -43,7 +43,8 @@ for i in range(psys.natoms):
 
 test_epot= -0.01903649
 
-if (psys.epot - test_epot) <= eps: 
+
+if abs(psys.epot - test_epot) <= eps: 
   print("Test-1 on potential energy successful!\n")
 else:
   print("Test-1 on potential energy failed!\n")
@@ -66,7 +67,7 @@ print("r[0] r[1] fixed on axis x,y and sigma distance on axis z | r[2] inside th
 
 test_epot= -0.006601053960292
 
-if (psys.epot - test_epot) <= eps: 
+if abs(psys.epot - test_epot) <= eps: 
   print("Test-2 on potential energy successful!\n")
 else:
   print("Test-2 on potential energy failed!\n")
