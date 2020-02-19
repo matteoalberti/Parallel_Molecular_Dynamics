@@ -3,7 +3,7 @@ set font 'Helvetica,16'
 set output 'openmp_timebenchmark_qreg.png'
 set title "Openmp scaling\n{/*0.8 (regular queue on ulysses cluster: n=1, p=20)}"
 set xlabel 'Number of Threads'
-set ylabel 'Elapsed Time'
+set ylabel 'Elapsed Time (seconds)'
 
 set key top right
 set xrange[1:20]
