@@ -6,9 +6,9 @@
 
 #include "compute_forces.h"
 #include "helper.h"
-//#include "timer.h"
 
 #ifdef USE_MPI
+#include "timer.h"
 #include <mpi.h>
 #endif //USE_MPI
 

@@ -21,7 +21,10 @@
 #include "getline.h"
 #include "read_input.h"
 #include "mpi_functions.h"
+
+#ifdef _OPENMP
 #include "timer.h"
+#endif //_OPENMP
 
 #ifdef USE_MPI
 #include <mpi.h>
