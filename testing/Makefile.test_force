@@ -1,0 +1,39 @@
+# -*- Makefile -*-
+IPATH=../include
+SPATH=../src
+OBJS = test_force.o compute_forces.o helper.o
+EXE = test_force.x
+CC = gcc
+CFLAGS = -I $(IPATH) -Wall -Wextra -ffast-math -fomit-frame-pointer -O3
+LDLIBS=-lm
+
+default: $(EXE)
+
+.PHONY: default
+
+$(EXE): $(OBJS)
+	$(CC) $^ -o $@
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o $@
+	
+compute_forces.o: $(SPATH)/compute_forces.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o compute_forces.o
+
+helper.o: $(SPATH)/helper.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o helper.o
+	
+	
+test_force.o: $(IPATH)/helper.h $(IPATH)/compute_forces.h $(IPATH)/timer.h 
+
+compute_forces.o: $(IPATH)/helper.h $(IPATH)/compute_forces.h $(IPATH)/timer.h 
+
+helper.o: $(IPATH)/helper.h $(IPATH)/md_struct.h $(IPATH)/constants.h
+
+clean:
+	rm -f $(OBJS) $(EXE)
+
+.PHONY: clean
+
+
+

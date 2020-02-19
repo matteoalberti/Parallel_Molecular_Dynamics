@@ -1,4 +1,6 @@
-language: c
+language: python
+python:
+  - "3.6.5"
 
 before_install:
   - sudo apt-get -qq update
@@ -8,4 +10,27 @@ compiler:
   - gcc
 
 script:
-  - make check 
+  - make clean
+  - make
+  - make check_c 
+  - make clean
+  - make mpi
+  - make mpi_check_c
+  - make clean
+  - make openmp
+  - make check_c
+  - make clean
+  - make mpi_openmp
+  - make mpi_check_c
+  - make clean
+  - make shared
+  - make check
+  - make clean
+  - make shared_openmp
+  - make check
+  - make clean
+  - make test
+  
+  
+  
+  

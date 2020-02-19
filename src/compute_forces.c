@@ -6,9 +6,9 @@
 
 #include "compute_forces.h"
 #include "helper.h"
-#include "timer.h"
 
 #ifdef USE_MPI
+#include "timer.h"
 #include <mpi.h>
 #endif //USE_MPI
 
@@ -16,6 +16,12 @@
 #include <omp.h>
 #endif //_OPENMP
 
+double pbc2(double x, const double boxby2)
+{
+    while (x >  boxby2) x -= 2.0*boxby2;
+    while (x < -boxby2) x += 2.0*boxby2;
+    return x;
+}
 
 /* compute forces */
 void force(mdsys_t *sys) 
@@ -66,9 +72,9 @@ void force(mdsys_t *sys)
 #endif//USE_MPI      
             
             /* get distance between particle i and j */
-            rx=pbc(sys->rx[i] - sys->rx[j], 0.5*sys->box);
-            ry=pbc(sys->ry[i] - sys->ry[j], 0.5*sys->box);
-            rz=pbc(sys->rz[i] - sys->rz[j], 0.5*sys->box);
+            rx=pbc2(sys->rx[i] - sys->rx[j], 0.5*sys->box);
+            ry=pbc2(sys->ry[i] - sys->ry[j], 0.5*sys->box);
+            rz=pbc2(sys->rz[i] - sys->rz[j], 0.5*sys->box);
             rsq = rx*rx + ry*ry + rz*rz;
       
             /* compute force and energy if within cutoff */

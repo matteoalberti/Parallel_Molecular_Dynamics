@@ -3,7 +3,7 @@
  * units: Length=Angstrom, Mass=amu; Energy=kcal
  *
  * baseline c version.
- */
+*/
 
 #include <stdio.h>
 #include <string.h>
@@ -22,6 +22,10 @@
 #include "read_input.h"
 #include "mpi_functions.h"
 
+#ifdef _OPENMP
+#include "timer.h"
+#endif //_OPENMP
+
 #ifdef USE_MPI
 #include <mpi.h>
 #endif //USE_MPI
@@ -32,6 +36,7 @@ int main()
     int nprint, i;
     char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
     FILE *fp,*traj,*erg;
+    double t_start, t_end;
     mdsys_t sys;
 
     //Initialize MPI
@@ -55,12 +60,12 @@ int main()
     sys.fx=(double *)malloc(sys.natoms*sizeof(double));
     sys.fy=(double *)malloc(sys.natoms*sizeof(double));
     sys.fz=(double *)malloc(sys.natoms*sizeof(double));
-	#ifdef USE_MPI
-	  // only for mpi
-	  sys.cx = (double *) malloc( sys.natoms * sizeof(double) );
-	  sys.cy = (double *) malloc( sys.natoms * sizeof(double) );
-	  sys.cz = (double *) malloc( sys.natoms * sizeof(double) );
-	#endif //USE_MPI
+#ifdef USE_MPI
+    // only for mpi
+    sys.cx = (double *) malloc( sys.natoms * sizeof(double) );
+    sys.cy = (double *) malloc( sys.natoms * sizeof(double) );
+    sys.cz = (double *) malloc( sys.natoms * sizeof(double) );
+#endif //USE_MPI
 
     /* read restart */
     if (sys.rank==0){
@@ -101,9 +106,12 @@ int main()
     output(&sys, erg, traj); 
     }
 
+    if(!sys.rank) t_start = timer_seconds(); 
+
     /**************************************************/
     /* main MD loop */
   //  nprint=1;
+
     for(sys.nfi=1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 
         /* write output, if requested */
@@ -122,6 +130,11 @@ int main()
         ekin(&sys);}
     }
     /**************************************************/
+
+    if(!sys.rank) {
+	t_end = timer_seconds(); 
+	printf("Elapsed time %f \n",t_end - t_start);
+    }
 
     /* clean up: close files, free memory */
     if ( sys.rank == 0 ) {

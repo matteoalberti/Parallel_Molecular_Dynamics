@@ -1,5 +1,4 @@
 *.x
-*.png
 *.o
 *.gif
 *.log
@@ -8,3 +7,7 @@
 examples
 mynotes*
 __pycache__
+*.sh
+testing/__pycache__
+.xyz
+.dat
