@@ -70,8 +70,10 @@ int main()
 
     if((sys.ekin - test_ekin) <= eps) 
     printf("Test-1 on kinetic energy successful!\n");
-    else
-    printf("Test-1 on kinetic energy failed!\n");
+    else{
+      printf("Test-1 on kinetic energy failed!\n");
+      exit(1);
+    };
 //====================================================================
 
 //*************************TEST2*************
@@ -102,8 +104,10 @@ int main()
 
     if((sys.ekin - test_ekin) <= eps) 
     printf("Test-2 on kinetic energy successful!\n");
-    else
-    printf("Test-2 on kinetic energy failed!\n");
+    else{
+      printf("Test-2 on kinetic energy failed!\n");
+      exit(1);
+    };
 //====================================================================
 //*************************TEST3*************
     /* particle one */
@@ -133,8 +137,10 @@ int main()
 
     if((sys.ekin - test_ekin) <= eps) 
     printf("Test-3 on kinetic energy successful!\n");
-    else
-    printf("Test-3 on kinetic energy failed!\n");
+    else{
+      printf("Test-3 on kinetic energy failed!\n");
+      exit(1);
+    };
 //====================================================================
 
     free(sys.vx);

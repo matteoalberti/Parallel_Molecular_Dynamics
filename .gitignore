@@ -8,3 +8,5 @@
 examples
 mynotes*
 __pycache__
+*.sh
+testing/__pycache__

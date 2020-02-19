@@ -2,7 +2,6 @@ import mdsys_struct as md
 import time
 
 #calling the system variable "sys" would be confusing as "sys" is a rather standart module, so we call it psys
-#it reads the input pile from stdin in constructor
 psys=md.mdsys()
 
 #initialize MPI if defined and get rank, rank zero if MPI not defined
@@ -51,8 +50,9 @@ for i in range(psys.nsteps):
 if psys.rank==0:
   print("Simulation Done.\n");
   psys.close_files()
-  end=time.time()
-  print(end - start)
+  end = time.time()
+  print(end-start)
+
   
 psys.extra_free()
 
