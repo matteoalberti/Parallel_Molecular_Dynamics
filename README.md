@@ -8,6 +8,10 @@
 This package contains simplified MD code with multi-threading
 parallelization for simulating atoms with a Lennard-Jones potential.
 
+### requirements:
+
+python 3.6.5
+openmpi version 3 or higher
 
 ###  Compiling and usage instructions: 
 

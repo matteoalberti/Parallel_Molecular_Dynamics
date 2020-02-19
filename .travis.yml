@@ -28,12 +28,6 @@ script:
   - make clean
   - make shared_openmp
   - make check
-  - make clean
-  - make shared_mpi
-  - make mpi_check
-  - make clean
-  - make shared_mpi_openmp
-  - make mpi_check
   
   
   

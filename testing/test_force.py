@@ -41,8 +41,13 @@ print("\n\nr[0] r[1] fixed on axis x,y and sigma distance on axis z | r[2] out o
 for i in range(psys.natoms):
 		print("Fx  %20.8f %20.8f %20.8f\n" % (psys.fx[i], psys.fy[i], psys.fz[i]));
 
-print("Epot should be near zero : %20.8f\n\n"% psys.epot);	
-	
+test_epot= -0.01903649
+
+if (psys.epot - test_epot) <= eps: 
+  print("Test-1 on potential energy successful!\n")
+else:
+  print("Test-1 on potential energy failed!\n")
+  exit(1)	
 
 #Set position of atoms - r[0] r[1] fixed on ax,ay and sigma distance between az | r[2] inside
 psys.rx[0]=1;
@@ -58,8 +63,11 @@ psys.rz[2]=-4.9350;
 psys.force();
 	
 print("r[0] r[1] fixed on axis x,y and sigma distance on axis z | r[2] inside the box\n");
-for i in range(psys.natoms):
-  print("Fx  %20.8f %20.8f %20.8f\n"% ( psys.fx[i], psys.fy[i], psys.fz[i]));
-  
-print("Epot should be near zero : %20.8f\n\n", psys.epot);	
-	
+
+test_epot= -0.006601053960292
+
+if (psys.epot - test_epot) <= eps: 
+  print("Test-2 on potential energy successful!\n")
+else:
+  print("Test-2 on potential energy failed!\n")
+  exit(1)	
