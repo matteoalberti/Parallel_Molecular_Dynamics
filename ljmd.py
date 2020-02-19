@@ -15,6 +15,7 @@ psys.alloc_ptrs()
 
 #allocate extra buffers if MPI defined
 psys.extra_alloc()
+psys.set_Nloc()
 
 if psys.rank==0:
   psys.fill_pos_vel()

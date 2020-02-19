@@ -13,6 +13,7 @@ void initialize_mpi ( mdsys_t * sys ) {
   MPI_Init(NULL,NULL);
   MPI_Comm_size( MPI_COMM_WORLD, &sys->nps );
   MPI_Comm_rank( MPI_COMM_WORLD, &sys->rank );
+  
 #else
   sys->rank = 0;
   sys->nps = 1;
@@ -21,6 +22,17 @@ void initialize_mpi ( mdsys_t * sys ) {
   return;
 
 }
+
+
+
+void set_Nloc ( mdsys_t * sys ) {
+#ifdef USE_MPI
+    if ((sys->rank) < (sys->natoms)%(sys->nps)){
+      sys->Nloc = (sys->natoms)/(sys->nps) +1;
+    }else{sys->Nloc = (sys->natoms)/(sys->nps);}
+#endif
+}
+
 
 void allocate_cs ( mdsys_t * sys ) {
 #ifdef USE_MPI

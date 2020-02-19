@@ -19,7 +19,7 @@ def get_a_line(ifile) :
   return line
 
 class mdsys(ct.Structure):
-  _fields_ = [ ("natoms", ct.c_int), ("nfi", ct.c_int), ("nsteps",ct.c_int), ("rank", ct.c_int), ("nps", ct.c_int),
+  _fields_ = [ ("natoms", ct.c_int), ("nfi", ct.c_int), ("nsteps",ct.c_int), ("rank", ct.c_int), ("nps", ct.c_int), ("Nloc", ct.c_int),
                  ("dt",ct.c_double), ("mass",ct.c_double), ("epsilon", ct.c_double), ("sigma", ct.c_double), ("box", ct.c_double), ("rcut", ct.c_double), ("ekin", ct.c_double), ("epot", ct.c_double), ("temp", ct.c_double), ("rx", ct.POINTER(ct.c_double)), ("ry", ct.POINTER(ct.c_double)), ("rz", ct.POINTER(ct.c_double)), ("vx", ct.POINTER(ct.c_double)), ("vy", ct.POINTER(ct.c_double)), ("vz", ct.POINTER(ct.c_double)), ("fx", ct.POINTER(ct.c_double)),("fy", ct.POINTER(ct.c_double)), ("fz", ct.POINTER(ct.c_double)), ("cx", ct.POINTER(ct.c_double)),("cy", ct.POINTER(ct.c_double)), ("cz", ct.POINTER(ct.c_double)) ]
    
   def __init__(self):
@@ -34,7 +34,8 @@ class mdsys(ct.Structure):
     self.broadcast_arrs_func = wrap_function(c_ljmd, 'broadcast_arrays', None, [ct.POINTER(mdsys)])
     self.extra_alloc_func = wrap_function(c_ljmd, 'allocate_cs', None, [ct.POINTER(mdsys)])
     self.extra_free_func = wrap_function(c_ljmd, 'free_cs', None, [ct.POINTER(mdsys)])
- #   self.md_loop_func = wrap_function(c_mdloop, 'md_loop', None, [ct.POINTER(mdsys)])
+    self.set_Nloc_func = wrap_function(c_ljmd, 'set_Nloc', None, [ct.POINTER(mdsys)])
+
     
   def force(self):
     self.force_func(self)
@@ -66,6 +67,9 @@ class mdsys(ct.Structure):
     
   def extra_free(self):
     self.extra_free_func(self)
+    
+  def set_Nloc(self):
+    self.set_Nloc_func(self)
    
   def alloc_ptrs(self):
     self.rx = (ct.c_double * self.natoms)()

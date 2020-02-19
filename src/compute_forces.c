@@ -57,8 +57,10 @@ void force(mdsys_t *sys)
     double c6     = -4.0*sys->epsilon*sigma6;
     
 #ifdef USE_MPI
-    for(i=sys->rank; i < (sys->natoms) ; i+=sys->nps) {
-      for(j=i+1; j < (sys->natoms); ++j) {
+  //  for(i=sys->rank; i < (sys->natoms) ; i+=sys->nps) {
+   int start=(sys->rank)*((sys->natoms)/(sys->nps)) + (sys->natoms)%(sys->nps);
+   for (i = start; i< start+ sys->Nloc; i++) {
+    for(j=i+1; j < (sys->natoms); ++j) {
 #else
 
 #pragma omp parallel for schedule(dynamic) private(i, j, rsq, rx, ry, rz, ffac) reduction(+ : epot) 
@@ -116,7 +118,7 @@ void force(mdsys_t *sys)
 #pragma omp atomic
 	        sys->fz[j] -= rz;
            }
-        }
+        } //of inner for loop
 
 #pragma omp atomic
 		sys->fx[i] += fx_i;
@@ -126,7 +128,7 @@ void force(mdsys_t *sys)
 		sys->fz[i] += fz_i;
   		
 #endif //USE_MPI         
-    }
+    } //of big for loop
 
 #ifdef USE_MPI
     MPI_Reduce( sys->cx, sys->fx, sys->natoms, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD );

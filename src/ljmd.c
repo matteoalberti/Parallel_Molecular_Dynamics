@@ -61,7 +61,8 @@ int main()
     sys.cy = (double *) malloc( sys.natoms * sizeof(double) );
     sys.cz = (double *) malloc( sys.natoms * sizeof(double) );
 #endif //USE_MPI
-
+    set_Nloc(&sys); 
+    
     /* read restart */
     if (sys.rank==0){
     fp=fopen(restfile,"r");
