@@ -40,7 +40,9 @@ int main(){
 	sys.nsteps=1000;
 	sys.dt=5.0;
 	sys.nfi=0;
-	
+  
+  double test_epot;
+	double eps=1e-5;
 	// allocate for testing
         //double test1[9]={-0.01153771,0.00442061,-1.68024661,-0.00222459,0.00085234,1.67493136,0.01376230,-0.00527295,0.00531525};
         //double test2[9]={0.00077164,-0.00317732,-1.68067665,0.00000000,0.00000000,1.67682819,-0.00077164,0.00317732,0.00384845};
@@ -76,8 +78,13 @@ int main(){
 	for (int i=0; i<sys.natoms; ++i) {
 		printf("Fx  %20.8f %20.8f %20.8f\n", sys.fx[i], sys.fy[i], sys.fz[i]);
 		}	
-	printf("Epot should be near zero : %20.8f\n\n", sys.epot);	
-	
+	test_epot= -0.01903649;
+	if (fabs(sys.epot - test_epot) <= eps){
+    printf("Test-1 on potential energy successful!\n");
+    }else{
+      printf("Test-1 on potential energy failed!\n");
+      exit(1);
+    };
 
 	//Set position of atoms - r[0] r[1] fixed on ax,ay and sigma distance between az | r[2] inside
 	sys.rx[0]=1;
@@ -99,7 +106,13 @@ int main(){
 	for (int i=0; i<sys.natoms; ++i) {
 		printf("Fx  %20.8f %20.8f %20.8f\n", sys.fx[i], sys.fy[i], sys.fz[i]);
 		}	
-	printf("Epot should be near zero : %20.8f\n\n", sys.epot);	
+  test_epot= -0.006601053960292;
+	if (fabs(sys.epot - test_epot) <= eps){ 
+    printf("Test-2 on potential energy successful!\n");}
+    else{
+      printf("Test-2 on potential energy failed!\n");
+      exit(1);
+    };
 	
 }
 

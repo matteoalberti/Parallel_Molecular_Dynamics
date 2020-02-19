@@ -30,7 +30,7 @@ mpi_check_c:
 
 		
 test:
-	$(MAKE) $(MFLAGS) -C testing test
+	$(MAKE) $(MFLAGS) -C testing all_py
 	
 shared: 
 	$(MAKE) $(MFLAGS) -C src shared  
