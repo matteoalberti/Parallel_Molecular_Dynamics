@@ -1,4 +1,6 @@
-#ifndef __timers__
+#ifndef __timer__
+#define __timer__
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

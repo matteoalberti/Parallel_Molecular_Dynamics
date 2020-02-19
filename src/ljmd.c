@@ -21,6 +21,7 @@
 #include "getline.h"
 #include "read_input.h"
 #include "mpi_functions.h"
+#include "timer.h"
 
 #ifdef USE_MPI
 #include <mpi.h>
@@ -32,6 +33,7 @@ int main()
     int nprint, i;
     char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
     FILE *fp,*traj,*erg;
+    double t_start, t_end;
     mdsys_t sys;
 
     //Initialize MPI
@@ -101,9 +103,12 @@ int main()
     output(&sys, erg, traj); 
     }
 
+    if(!sys.rank) t_start = timer_seconds(); 
+
     /**************************************************/
     /* main MD loop */
   //  nprint=1;
+
     for(sys.nfi=1; sys.nfi <= sys.nsteps; ++sys.nfi) {
 
         /* write output, if requested */
@@ -122,6 +127,11 @@ int main()
         ekin(&sys);}
     }
     /**************************************************/
+
+    if(!sys.rank) {
+	t_end = timer_seconds(); 
+	printf("Elapsed time %f \n",t_end - t_start);
+    }
 
     /* clean up: close files, free memory */
     if ( sys.rank == 0 ) {
