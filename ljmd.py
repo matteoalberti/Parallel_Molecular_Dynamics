@@ -49,10 +49,10 @@ for i in range(psys.nsteps):
 #print(psys.rank);   
    
 if psys.rank==0:
-  print("Simulation Done.\n");
+  #print("Simulation Done.\n");
   psys.close_files()
   end=time.time()
-  print(end - start)
+  print("time ", end - start)
   
 psys.extra_free()
 
