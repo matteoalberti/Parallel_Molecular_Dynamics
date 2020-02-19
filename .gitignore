@@ -9,3 +9,5 @@ mynotes*
 __pycache__
 *.sh
 testing/__pycache__
+.xyz
+.dat
